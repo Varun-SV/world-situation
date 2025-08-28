@@ -1,96 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="theme-1">
+
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>🌍 World Situation Dashboard 2025 - It's Getting Weird Out Here</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>world-situation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Using a base font from Google Fonts */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
         /* ===== Theme variables and general resets ===== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root{
+        :root {
             --bg-gradient: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FECA57);
             --bg-size: 400% 400%;
             --accent: #FF6B6B;
-            --widget-bg: rgba(255,255,255,0.95);
+            --widget-bg: rgba(255, 255, 255, 0.95);
             --text-color: #333;
-            --muted: #666;
-            --font: "Comic Sans MS", cursive, sans-serif;
-            --glass: rgba(255,255,255,0.85);
-            --widget-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            --muted-text: #666;
+            --font-main: "Inter", sans-serif;
+            --font-mono: "Roboto Mono", monospace;
+            --widget-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --border-color: rgba(0, 0, 0, 0.05);
         }
 
-        /* 7 theme classes: theme-0 .. theme-6. Each overrides a few variables
-           to produce distinct looks. The choice below uses color palettes,
-           fonts and subtle differences. */
-        .theme-0 { /* Candy Vaporwave */
-            --bg-gradient: linear-gradient(135deg,#ff9a9e,#fad0c4,#ffd1ff);
-            --accent: #FF6B6B;
-            --widget-bg: rgba(255,255,255,0.95);
-            --text-color: #2b2b2b;
-            --muted: #444;
-            --font: "Comic Sans MS", cursive, sans-serif;
+        .theme-0 { /* Serene Dawn */
+            --bg-gradient: linear-gradient(135deg, #fce38a, #f38181);
+            --accent: #f38181;
+            --widget-bg: rgba(255, 255, 255, 0.85);
+            --text-color: #3a3a3a;
+            --muted-text: #5f5f5f;
+            --border-color: rgba(0, 0, 0, 0.05);
         }
-        .theme-1 { /* Sleek Night */
-            --bg-gradient: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-            --accent: #4ECDC4;
-            --widget-bg: rgba(255,255,255,0.06);
-            --text-color: #e8f6f5;
-            --muted: #cbd5d5;
-            --font: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            --widget-shadow: 0 10px 40px rgba(0,0,0,0.6);
-        }
-        .theme-2 { /* Retro Terminal */
-            --bg-gradient: linear-gradient(135deg,#0b1b0b,#183018);
+
+        .theme-1 { /* Midnight Matrix */
+            --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             --accent: #7CFC00;
-            --widget-bg: rgba(10,10,10,0.9);
-            --text-color: #BFFFBF;
-            --muted: #9ad99a;
-            --font: "Courier New", monospace;
-            --widget-shadow: 0 8px 30px rgba(0,0,0,0.7);
-        }
-        .theme-3 { /* Pastel Sunrise */
-            --bg-gradient: linear-gradient(135deg,#FFD194,#D1913C,#F6D365);
-            --accent: #FF8A65;
-            --widget-bg: rgba(255,255,255,0.97);
-            --text-color: #2c2c2c;
-            --muted: #666;
-            --font: "Georgia", serif;
-        }
-        .theme-4 { /* High-contrast Neon */
-            --bg-gradient: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
-            --accent: #FF00FF;
-            --widget-bg: rgba(20,20,20,0.95);
-            --text-color: #ffffff;
-            --muted: #d0d0d0;
-            --font: "Helvetica Neue", Arial, sans-serif;
-            --widget-shadow: 0 12px 40px rgba(255,0,255,0.08);
-        }
-        .theme-5 { /* Earthy Classic */
-            --bg-gradient: linear-gradient(135deg,#8E9EAB,#BED7E6);
-            --accent: #6B8E23;
-            --widget-bg: rgba(255,255,255,0.97);
-            --text-color: #2f2f2f;
-            --muted: #666;
-            --font: "Times New Roman", Times, serif;
-        }
-        .theme-6 { /* Playful Memphis */
-            --bg-gradient: linear-gradient(135deg,#f6d365,#fda085,#fbc2eb);
-            --accent: #00A8E8;
-            --widget-bg: rgba(255,255,255,0.96);
-            --text-color: #222;
-            --muted: #666;
-            --font: "Verdana", Geneva, Tahoma, sans-serif;
+            --widget-bg: rgba(10, 25, 40, 0.8);
+            --text-color: #e8f6f5;
+            --muted-text: #a0bdba;
+            --widget-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            --border-color: rgba(255, 255, 255, 0.1);
         }
 
-        html, body { height: 100%; }
+        .theme-2 { /* Retro Terminal */
+            --bg-gradient: linear-gradient(135deg, #0b1b0b, #183018);
+            --accent: #7CFC00;
+            --widget-bg: rgba(10, 10, 10, 0.9);
+            --text-color: #BFFFBF;
+            --muted-text: #9ad99a;
+            --font-main: "Roboto Mono", monospace;
+            --font-mono: "Roboto Mono", monospace;
+            --widget-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+            --border-color: rgba(124, 252, 0, 0.2);
+        }
+
+        .theme-3 { /* Sahara Sunset */
+            --bg-gradient: linear-gradient(135deg, #FFD194, #D1913C, #F6D365);
+            --accent: #D1913C;
+            --widget-bg: rgba(255, 255, 255, 0.9);
+            --text-color: #4d3e2f;
+            --muted-text: #7d6a55;
+            --border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .theme-4 { /* Synthwave Grid */
+            --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            --accent: #FF00FF;
+            --widget-bg: rgba(20, 20, 20, 0.85);
+            --text-color: #ffffff;
+            --muted-text: #d0d0d0;
+            --widget-shadow: 0 12px 40px rgba(255, 0, 255, 0.1);
+            --border-color: rgba(255, 0, 255, 0.2);
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: var(--font);
+            font-family: var(--font-main);
             background: var(--bg-gradient);
             background-size: var(--bg-size);
-            animation: gradientShift 12s ease infinite;
-            min-height: 100vh;
-            overflow-x: hidden;
+            animation: gradientShift 15s ease infinite;
             color: var(--text-color);
             transition: background 0.8s ease, color 0.6s ease;
         }
@@ -101,691 +96,513 @@
             100% { background-position: 0% 50%; }
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header { text-align: center; margin-bottom: 20px; position: relative; }
-        .title {
-            font-size: 3.2em;
-            color: var(--text-color);
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.15);
-            animation: bounce 2.2s ease-in-out infinite;
-            margin-bottom: 8px;
-        }
-        @keyframes bounce {
-            0%,20%,50%,80%,100%{ transform: translateY(0); }
-            40%{ transform: translateY(-8px); }
-            60%{ transform: translateY(-4px); }
-        }
-        .subtitle {
-            font-size: 1.05em;
-            color: var(--muted);
-            background: rgba(255,255,255,0.12);
-            padding: 8px 14px;
-            border-radius: 18px;
-            display: inline-block;
-            animation: pulse 3s ease-in-out infinite;
-            backdrop-filter: blur(6px);
-        }
-        @keyframes pulse { 0%{ transform:scale(1);}50%{transform:scale(1.03);}100%{transform:scale(1);} }
-
-        /* Dashboard grid & widgets */
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit,minmax(320px,1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
         .widget {
             background: var(--widget-bg);
-            border-radius: 16px;
-            padding: 18px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
             box-shadow: var(--widget-shadow);
-            transform: translateY(0);
-            transition: all 0.32s ease;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.3s ease;
         }
-        .widget:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 18px 36px rgba(0,0,0,0.15); }
-        .widget::before {
-            content:'';
-            position:absolute; top:0; left:-120%;
-            width:100%; height:100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
-            transition: left 0.8s ease;
+        
+        .widget:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
         }
-        .widget:hover::before { left: 120%; }
 
-        .widget-title { font-size: 1.5em; color: var(--text-color); margin-bottom: 12px; text-align: center; z-index:2; position:relative; }
+        .news-feed::-webkit-scrollbar { width: 6px; }
+        .news-feed::-webkit-scrollbar-track { background: transparent; }
+        .news-feed::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
 
-        /* Tariff meter & flags */
-        .tariff-meter { text-align: center; position: relative; }
-        .meter-display {
-            font-size: 3.3em;
-            color: var(--accent);
-            font-weight: 800;
-            animation: countUp 900ms cubic-bezier(.2,.8,.2,1);
-            text-shadow: 1px 1px 6px rgba(0,0,0,0.12);
+        .skeleton {
+            opacity: 0.7;
+            animation: skeleton-loading 1s linear infinite alternate;
         }
-        @keyframes countUp { from{ transform: scale(0.6); opacity:0;} to{ transform: scale(1); opacity:1; } }
-        .meter-label { font-size: 1em; color: var(--muted); margin-top: 6px; }
-
-        .country-flags { display:flex; justify-content:space-around; margin-top:14px; flex-wrap:wrap; gap:8px; }
-        .flag-item { text-align:center; margin:6px; padding:8px; background: rgba(0,0,0,0.06); border-radius:10px; transition: all 0.25s ease; cursor:pointer; }
-        .flag-item:hover { transform: scale(1.05); background: rgba(0,0,0,0.12); }
-        .flag-emoji { font-size:1.6em; display:block; margin-bottom:6px; animation: wave 2.2s ease-in-out infinite; }
-        @keyframes wave { 0%,100%{ transform: rotate(0deg);}25%{transform:rotate(-5deg);}75%{transform:rotate(5deg);} }
-
-        /* News ticker */
-        .news-ticker { background: rgba(0,0,0,0.24); color: white; padding: 12px; border-radius: 12px; margin: 18px 0; position: relative; overflow:hidden; }
-        .ticker-content { animation: scroll-left 28s linear infinite; white-space:nowrap; font-size:1.02em; }
-        @keyframes scroll-left { 0%{ transform:translate3d(100%,0,0);} 100%{ transform:translate3d(-100%,0,0);} }
-        .breaking-label { background: var(--accent); color: white; padding:4px 8px; border-radius:6px; font-weight:700; margin-right:8px; animation: blink 1.6s infinite; }
-        @keyframes blink { 0%,50%{ opacity:1;}51%,100%{ opacity:0.3;} }
-
-        /* world map big emoji */
-        .world-map { text-align:center; font-size:12.5em; animation: spin 26s linear infinite; margin: 12px 0; filter: drop-shadow(0 0 18px rgba(0,0,0,0.18)); }
-        @keyframes spin { from{ transform: rotate(0deg);} to{ transform: rotate(360deg);} }
-
-        /* news feed and items */
-        .news-feed { max-height: 380px; overflow-y:auto; border-radius:10px; background: rgba(255,255,255,0.02); padding:8px; }
-        .news-item { padding:12px; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background-color 0.25s ease; cursor:pointer; border-radius:6px; margin-bottom:6px; }
-        .news-item:hover { background-color: rgba(255,255,255,0.03); }
-        .news-title { font-weight:700; color:var(--text-color); margin-bottom:6px; }
-        .news-source { font-size:0.92em; color:var(--muted); font-style:italic; }
-
-        .loading { text-align:center; color:var(--muted); padding:18px; }
-
-        /* economic indicators */
-        .economic-indicator { display:flex; justify-content:space-between; align-items:center; margin:10px 0; padding:10px; background: rgba(0,0,0,0.03); border-radius:10px; transition: all 0.28s ease; }
-        .economic-indicator:hover { transform: translateX(6px); background: rgba(0,0,0,0.06); }
-        .indicator-label { font-weight:700; color:var(--text-color); }
-        .indicator-value { font-size:1.05em; font-weight:800; color:var(--accent); }
-
-        .fun-fact { background: linear-gradient(45deg,#FFE082,#FFCC02); border-radius:12px; padding:12px; margin:12px 0; text-align:center; border: 2px dashed rgba(255,160,0,0.8); animation: wiggle 3s ease-in-out infinite; }
-        @keyframes wiggle { 0%,100%{ transform: rotate(0deg);}25%{transform:rotate(1deg);}75%{transform:rotate(-1deg);} }
-
-        /* refresh button */
-        .refresh-button {
-            position: fixed; bottom: 28px; right: 28px;
-            background: var(--accent);
-            color: white; border: none; border-radius: 50%;
-            width: 60px; height: 60px; font-size: 1.25em; cursor:pointer;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.25); transition:all 0.25s ease; animation: float 3s ease-in-out infinite;
+        @keyframes skeleton-loading {
+            0% { background-color: rgba(128, 128, 128, 0.1); }
+            100% { background-color: rgba(128, 128, 128, 0.2); }
         }
-        .refresh-button:hover { transform: scale(1.06); filter:brightness(1.05); }
-        @keyframes float { 0%,100%{ transform: translateY(0);}50%{ transform: translateY(-8px);} }
-
-        .last-updated { text-align:center; color:var(--muted); font-size:0.95em; margin-top:14px; opacity:0.9; }
-
-        .status-indicator { display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:8px; animation:pulse-dot 2s infinite; vertical-align:middle; }
-        .status-online { background-color:#4CAF50; }
-        .status-loading { background-color:#FFC107; }
-        .status-error { background-color:#F44336; }
-        @keyframes pulse-dot { 0%{opacity:1;}50%{opacity:0.5;}100%{opacity:1;} }
-
-        /* small nav & pages for SPA */
-        .top-nav { display:flex; justify-content:center; gap:12px; margin:12px 0; flex-wrap:wrap; }
-        .nav-btn { padding:8px 12px; border-radius:10px; border: none; cursor:pointer; background: rgba(255,255,255,0.08); color:var(--text-color); font-weight:700; transition:all 0.2s ease; }
-        .nav-btn:hover { transform: translateY(-3px); background: rgba(255,255,255,0.12); }
-        .page { display:block; }
-        .hidden { display:none; }
-
-        /* detail modal/panel */
-        .detail-panel {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
-            max-width: 780px; width: calc(100% - 40px); background: var(--widget-bg); padding: 18px; border-radius: 12px;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.45); z-index: 9999; display:none;
+        
+        .custom-notification {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            border-radius: 8px;
+            background-color: var(--accent);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: bottom 0.5s ease-in-out;
+            z-index: 10000;
+            font-weight: 700;
         }
-        .detail-panel.show { display:block; animation: panelIn 240ms ease-out; }
-        @keyframes panelIn { from{ transform: translate(-50%,-46%) scale(0.98); opacity:0; } to{ transform:translate(-50%,-50%) scale(1); opacity:1; } }
-        .detail-close { position:absolute; top:10px; right:12px; background:transparent; border:none; font-size:1.25em; cursor:pointer; color:var(--muted); }
-        .detail-title { font-size:1.25em; font-weight:800; margin-bottom:8px; color:var(--text-color); }
-
-        /* small responsive tweaks */
-        @media (max-width:768px){
-            .title{ font-size:2.2em; }
-            .world-map{ font-size:8.5em; }
-            .meter-display{ font-size:2.6em; }
+        .custom-notification.show {
+            bottom: 20px;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1 class="title">🌍 World Situation Dashboard 2025</h1>
-            <p class="subtitle">📈 "It's Getting Interesting Out Here" 🎢</p>
-            <div class="top-nav" id="topNav">
-                <button class="nav-btn" data-page="home">Home</button>
-                <button class="nav-btn" data-page="tariff">Tariff-O-Meter™</button>
-                <button class="nav-btn" data-page="news">Live News Feed</button>
-                <button class="nav-btn" data-page="about">About</button>
-            </div>
-        </div>
 
-        <div class="news-ticker">
-            <div class="ticker-content" id="tickerContent">
-                <span class="breaking-label">🚨 LIVE</span>
-                Welcome to the World Situation Dashboard! • Tariff headlines loading...
-            </div>
-        </div>
+<body class="min-h-screen overflow-x-hidden">
+    <div class="container mx-auto p-4 md:p-6">
+        <!-- Header -->
+        <header class="text-center mb-6">
+            <h1 class="text-4xl md:text-5xl font-black mb-2" style="color: var(--text-color); text-shadow: 2px 2px 6px rgba(0,0,0,0.1);">
+                🌍 Global Situation Room
+            </h1>
+            <p class="text-lg" style="color: var(--muted-text);">Things Are Getting Weirder</p>
+        </header>
 
-        <div class="dashboard">
-            <!-- Page: HOME (default) -->
-            <section id="page-home" class="page widget">
-                <h2 class="widget-title">🌍 Global Situation Monitor</h2>
-                <div class="world-map">🌍</div>
-                <div class="economic-indicator">
-                    <span class="indicator-label">World Chaos Level:</span>
-                    <span class="indicator-value" id="chaosLevel">Moderately Spicy 🌶️</span>
+        <!-- Main Dashboard Grid -->
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- News Feed Widget (Larger) -->
+            <section class="widget rounded-2xl p-4 md:p-6 lg:col-span-2">
+                <h2 class="text-xl font-bold mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    World News Feed
+                </h2>
+                <div class="flex items-center gap-2 mb-3 text-sm" style="color: var(--muted-text);">
+                    <div id="newsStatusIndicator" class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></div>
+                    <span id="newsStatusText">Initializing feeds...</span>
                 </div>
-                <div class="economic-indicator">
-                    <span class="indicator-label">Trade War Status:</span>
-                    <span class="indicator-value">Active & Expanding 📈</span>
-                </div>
-                <div class="economic-indicator">
-                    <span class="indicator-label">COVID-19 Activity:</span>
-                    <span class="indicator-value">Rising (11% positivity) ⬆️</span>
-                </div>
-                <div class="fun-fact">
-                    <strong>🤯 Fun Fact:</strong><br>
-                    The current tariff situation is like playing global Jenga, but everyone's blindfolded and the blocks are made of money!
+                <div id="newsFeed" class="news-feed h-96 overflow-y-auto pr-2 space-y-3">
+                    <!-- Loading Skeleton -->
+                    <div class="space-y-3">
+                        <div class="h-16 rounded-lg skeleton"></div>
+                        <div class="h-16 rounded-lg skeleton"></div>
+                        <div class="h-16 rounded-lg skeleton"></div>
+                        <div class="h-16 rounded-lg skeleton"></div>
+                    </div>
                 </div>
             </section>
 
-            <!-- Page: TARIFF -->
-            <section id="page-tariff" class="page widget hidden">
-                <h2 class="widget-title">🎯 Tariff-O-Meter™</h2>
-                <div class="tariff-meter">
-                    <div class="meter-display" id="tariffRate">18%</div>
-                    <div class="meter-label">Current US Tariff Rate<br>(Highest Since 1934! 🏆)</div>
+            <!-- Local News Widget -->
+            <section class="widget rounded-2xl p-4 md:p-6">
+                <h2 class="text-xl font-bold mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" /><circle cx="12" cy="10" r="3" /></svg>
+                    Local News
+                </h2>
+                 <div id="localNewsFeed" class="news-feed h-96 overflow-y-auto pr-2 space-y-3">
+                    <p class="text-sm" style="color: var(--muted-text);">Awaiting location access to fetch local headlines...</p>
+                </div>
+            </section>
 
-                    <div class="country-flags">
-                        <div class="flag-item" title="China: 10% + extras">
-                            <span class="flag-emoji">🇨🇳</span>
-                            <small>10%</small>
+            <!-- Local Weather Widget -->
+            <section class="widget rounded-2xl p-4 md:p-6">
+                <h2 class="text-xl font-bold mb-4 flex items-center">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    Local Weather
+                </h2>
+                <div id="weatherData" class="space-y-4">
+                     <p class="text-sm" style="color: var(--muted-text);">Awaiting location access...</p>
+                </div>
+            </section>
+
+            <!-- Global Markets Widget -->
+            <section class="widget rounded-2xl p-4 md:p-6">
+                <h2 class="text-xl font-bold mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                    Global Markets
+                </h2>
+                <div id="marketData" class="space-y-3">
+                    <!-- Market data will be injected here -->
+                </div>
+            </section>
+            
+            <!-- Local Intel & Global Status Widget -->
+            <section class="widget rounded-2xl p-4 md:p-6">
+                 <h2 class="text-xl font-bold mb-4">Intel Briefing</h2>
+                 <div id="localIntel" class="space-y-3 mb-4 pb-4" style="border-bottom: 1px solid var(--border-color);">
+                    <h3 class="font-bold text-sm uppercase tracking-wider" style="color: var(--muted-text);">Local Intel</h3>
+                    <p class="text-sm" style="color: var(--muted-text);">Awaiting location access...</p>
+                 </div>
+                 <div class="space-y-3">
+                    <h3 class="font-bold text-sm uppercase tracking-wider" style="color: var(--muted-text);">Global Status</h3>
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold">Chaos Level:</span>
+                        <span id="chaosLevel" class="font-bold py-1 px-3 rounded-full text-sm" style="background-color: var(--accent); color: white;">Calculating...</span>
+                    </div>
+                     <div class="flex justify-between items-center">
+                        <span class="font-semibold">AI Consciousness:</span>
+                        <span class="font-bold" style="color: var(--accent);">Probably Fine...</span>
+                    </div>
+                 </div>
+            </section>
+
+            <!-- Settings/About Widget -->
+            <section class="widget rounded-2xl p-4 md:p-6 lg:col-span-3">
+                <h2 class="text-xl font-bold mb-4">Settings & About</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-sm mb-4" style="color: var(--muted-text);">This dashboard provides a real-time, slightly satirical glimpse into the state of the world. Data is aggregated from public RSS feeds.</p>
+                        <div class="text-xs" style="color: var(--muted-text);">
+                            Last updated: <span id="lastUpdate">Never</span>
                         </div>
-                        <div class="flag-item" title="Canada & Mexico: 25%">
-                            <span class="flag-emoji">🇨🇦</span>
-                            <small>25%</small>
-                        </div>
-                        <div class="flag-item" title="Mexico: 25%">
-                            <span class="flag-emoji">🇲🇽</span>
-                            <small>25%</small>
-                        </div>
-                        <div class="flag-item" title="India: 50% (Ouch!)">
-                            <span class="flag-emoji">🇮🇳</span>
-                            <small>50%</small>
-                        </div>
-                        <div class="flag-item" title="Vietnam: 20%">
-                            <span class="flag-emoji">🇻🇳</span>
-                            <small>20%</small>
+                    </div>
+                    <div>
+                        <h3 class="font-bold mb-2">Change Theme</h3>
+                        <div id="themeSwitcher" class="flex flex-wrap gap-2">
+                            <!-- Theme buttons will be injected here -->
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Page: NEWS -->
-            <section id="page-news" class="page widget hidden">
-                <h2 class="widget-title">📰 Live News Feed</h2>
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-                    <div class="status-indicator status-loading" id="newsStatus"></div>
-                    <span id="newsStatusText">Fetching latest chaos...</span>
-                </div>
-                <div class="news-feed" id="newsFeed">
-                    <div class="loading">Loading the latest world drama... 🍿</div>
-                </div>
-            </section>
-
-            <!-- Page: ECON -->
-            <section id="page-econ" class="page widget hidden">
-                <h2 class="widget-title">📊 Economic Weirdness Index</h2>
-                <div class="economic-indicator">
-                    <span class="indicator-label">Tariff Revenue (Monthly):</span>
-                    <span class="indicator-value">$27B 💰</span>
-                </div>
-                <div class="economic-indicator">
-                    <span class="indicator-label">Cost per US Family:</span>
-                    <span class="indicator-value">$2,400/year 😱</span>
-                </div>
-                <div class="economic-indicator">
-                    <span class="indicator-label">Mexico Steel Exports:</span>
-                    <span class="indicator-value">-16.6% 📉</span>
-                </div>
-                <div class="economic-indicator">
-                    <span class="indicator-label">Property Investment (China):</span>
-                    <span class="indicator-value">-12% 🏠💸</span>
-                </div>
-            </section>
-
-            <!-- Page: ABOUT -->
-            <section id="page-about" class="page widget hidden">
-                <h2 class="widget-title">ℹ️ About This Dashboard</h2>
-                <p style="color:var(--muted); margin-bottom:10px;">
-                    This single-file dashboard cycles through 7 different themes (one per day). It's an SPA — so
-                    internal navigation preserves the theme. News comes from RSS feeds with fallbacks and mock content.
-                </p>
-                <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                    <button class="nav-btn" onclick="applyTheme((getThemeIndex()+1)%7)">Try next theme</button>
-                    <button class="nav-btn" onclick="localStorage.removeItem('preferredTheme'); location.reload();">Reset theme</button>
-                </div>
-            </section>
-
-        </div>
-
-        <div class="last-updated">
-            <span class="status-indicator status-online" id="updateStatus"></span>
-            Last updated: <span id="lastUpdate">Loading...</span> • Auto-refresh every 5 minutes 🔄
-        </div>
+        </main>
     </div>
 
-    <button class="refresh-button" id="refreshBtn" title="Refresh All Data">🔄</button>
-
-    <!-- Detail panel for news items (in-theme) -->
-    <div class="detail-panel" id="detailPanel" role="dialog" aria-hidden="true">
-        <button class="detail-close" id="detailClose" title="Close">✕</button>
-        <div class="detail-title" id="detailTitle">Title</div>
-        <div style="color:var(--muted); margin-bottom:10px;" id="detailSource">Source • time</div>
-        <div id="detailBody" style="line-height:1.45; color:var(--text-color);">
-            Content preview...
-        </div>
-        <div style="text-align:right; margin-top:12px;">
-            <button class="nav-btn" id="openExternalBtn">Open External</button>
-        </div>
-    </div>
+    <!-- Custom Notification Element -->
+    <div id="customNotification" class="custom-notification"></div>
 
     <script>
-        /******************************
-         * THEME LOGIC (7-day cycle)
-         ******************************/
-        // Use a daily index so the theme changes each calendar day (looping every 7 days).
-        function getThemeIndex() {
-            // You can use a stored preferredTheme override
-            const preferred = localStorage.getItem('preferredTheme');
-            if (preferred !== null) return Number(preferred);
-
-            const dayNumber = Math.floor(Date.now() / 86400000); // days since epoch
-            return dayNumber % 7;
-        }
-
-        // Apply theme class to <html> (or body). Also update subtle properties if needed.
-        function applyTheme(index) {
-            index = Number(index) % 7;
-            document.documentElement.classList.remove(...Array.from({length:7}, (_,i)=>'theme-'+i));
-            document.documentElement.classList.add('theme-' + index);
-
-            // store last-applied theme visually (not mandatory)
-            document.documentElement.style.transition = 'background 0.6s ease, color 0.5s ease';
-            localStorage.setItem('lastAppliedTheme', index);
-        }
-
-        // On first load apply theme based on day
-        applyTheme(getThemeIndex());
-
-        /******************************
-         * SPA ROUTING (simple hash-based)
-         ******************************/
-        const pages = ['home','tariff','news','econ','about'];
-        function showPage(page) {
-            pages.forEach(p => {
-                const el = document.getElementById('page-' + p);
-                if (!el) return;
-                if (p === page) el.classList.remove('hidden');
-                else el.classList.add('hidden');
-            });
-            // sync selected nav button styles
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.style.outline = '');
-            document.querySelectorAll('.nav-btn[data-page="'+page+'"]').forEach(b => b.style.outline = '2px solid rgba(255,255,255,0.12)');
-        }
-
-        // attach nav buttons
-        document.querySelectorAll('.nav-btn[data-page]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const page = btn.getAttribute('data-page');
-                location.hash = '#' + page;
-            });
-        });
-
-        // on hashchange show relevant page
-        function handleHash() {
-            const hash = location.hash.replace('#','') || 'home';
-            if (pages.includes(hash)) showPage(hash);
-            else showPage('home');
-        }
-        window.addEventListener('hashchange', handleHash);
-
-        // initialize route
-        if (!location.hash) location.hash = '#home';
-        handleHash();
-
-        /******************************
-         * TICKER AND NEWS FETCHING (as before)
-         ******************************/
-        const RSS_FEEDS = [
-            'https://feeds.reuters.com/Reuters/worldNews',
-            'https://feeds.bbci.co.uk/news/world/rss.xml',
-            'https://rss.cnn.com/rss/edition.rss',
-            'https://feeds.npr.org/1001/rss.xml'
-        ];
-        const RSS_TO_JSON_API = 'https://api.rss2json.com/v1/api.json?rss_url=';
-        const CORS_PROXY = 'https://api.allorigins.win/get?url=';
-
-        let newsUpdateInterval;
-        let chaosWords = ['Mildly Chaotic 🤪','Moderately Spicy 🌶️','Quite Dramatic 🎭','Absolutely Bonkers 🤡','Peak Weirdness 🌪️'];
-        let currentChaos = 0;
-
-        document.addEventListener('DOMContentLoaded', function(){
-            updateLastRefreshTime();
-            fetchAllNews();
-            startAutoRefresh();
-            animateChaosLevel();
-            updateTariffAnimation();
-            setupRefreshButton();
-            console.log('🌍 World Situation Dashboard loading with themes...');
-        });
-
-        function updateLastRefreshTime(){
-            const now = new Date();
-            document.getElementById('lastUpdate').textContent = now.toLocaleString();
-        }
-
-        function updateStatus(elementId, status, text){
-            const statusEl = document.getElementById(elementId);
-            const textEl = document.getElementById(elementId + 'Text') || document.getElementById(elementId.replace('Status','StatusText'));
-            statusEl.className = `status-indicator status-${status}`;
-            if (textEl) textEl.textContent = text;
-        }
-
-        async function fetchAllNews(){
-            updateStatus('newsStatus','loading','Fetching latest global drama...');
-            const newsFeed = document.getElementById('newsFeed');
-            newsFeed.innerHTML = '<div class="loading">🌍 Gathering world news from the chaos dimension...</div>';
-
-            try {
-                let allNews = [];
-
-                for (const feedUrl of RSS_FEEDS){
-                    try {
-                        const news = await fetchRSSFeed(feedUrl);
-                        if (news && news.length>0) allNews = allNews.concat(news.slice(0,3));
-                    } catch (err) {
-                        console.warn('Feed failed:', feedUrl, err);
-                    }
-                }
-
-                if (allNews.length < 5){
-                    allNews = allNews.concat([
-                        { title: "🎯 US Tariff Rate Hits 18% - Highest Since 1934!", link:"#", pubDate: new Date().toISOString(), source:"Tariff Watch", content:"Tariffs spiked to 18%... (mock)" },
-                        { title: "🇮🇳 India Faces 50% Combined Tariffs Over Russian Oil Purchases", link:"#", pubDate: new Date().toISOString(), source:"Trade Wars Daily", content:"Trade repercussions emerge..." },
-                        { title: "🇲🇽 Mexico Steel Exports Drop 16.6% Amid Tariff Negotiations", link:"#", pubDate: new Date().toISOString(), source:"Steel & Drama Report", content:"Exports slump..." },
-                        { title: "💰 Americans Now Pay $2,400/Year More Due to Trade Policies", link:"#", pubDate: new Date().toISOString(), source:"Wallet Impact News", content:"Average family costs..." },
-                        { title: "🌍 Global COVID-19 Test Positivity Reaches 11% - Time for Masks Again?", link:"#", pubDate: new Date().toISOString(), source:"Pandemic Tracker", content:"Positivity rising..." }
-                    ]);
-                }
-
-                // Sort & limit
-                allNews.sort((a,b)=> new Date(b.pubDate) - new Date(a.pubDate));
-                allNews = allNews.slice(0,10);
-
-                displayNews(allNews);
-                updateStatus('newsStatus','online','Live feed active');
-                updateTickerContent(allNews);
-            } catch (error) {
-                console.error('Error fetching news:', error);
-                updateStatus('newsStatus','error','Feed temporarily offline');
-                document.getElementById('newsFeed').innerHTML = `
-                    <div class="news-item">
-                        <div class="news-title">🚨 News Feed Temporarily Unavailable</div>
-                        <div class="news-source">But hey, tariffs are still at 18%! 📈</div>
-                    </div>
-                    <div class="news-item">
-                        <div class="news-title">📡 Attempting to reconnect to global news matrix...</div>
-                        <div class="news-source">Please stand by while we untangle the internet</div>
-                    </div>
-                `;
-            }
-        }
-
-        async function fetchRSSFeed(feedUrl){
-            try {
-                const response = await fetch(`${RSS_TO_JSON_API}${encodeURIComponent(feedUrl)}&count=5`);
-                const data = await response.json();
-                if (data.status === 'ok' && data.items) {
-                    return data.items.map(item => ({ title:item.title, link:item.link, pubDate:item.pubDate, source: new URL(feedUrl).hostname, content:item.description || item.content || '' }));
-                }
-            } catch (err) {
-                console.warn('RSS2JSON failed, trying CORS fallback', err);
-            }
-
-            try {
-                const response = await fetch(`${CORS_PROXY}${encodeURIComponent(feedUrl)}`);
-                const data = await response.json();
-                const parser = new DOMParser();
-                const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
-                const items = xmlDoc.querySelectorAll('item');
-                return Array.from(items).slice(0,5).map(item => ({
-                    title: item.querySelector('title')?.textContent || 'News Update',
-                    link: item.querySelector('link')?.textContent || '#',
-                    pubDate: item.querySelector('pubDate')?.textContent || new Date().toISOString(),
-                    source: new URL(feedUrl).hostname,
-                    content: item.querySelector('description')?.textContent || ''
-                }));
-            } catch(err){
-                console.warn('CORS proxy also failed', err);
-                return [];
-            }
-        }
-
-        function displayNews(newsItems){
-            const newsFeed = document.getElementById('newsFeed');
-            if (!newsItems || newsItems.length===0){
-                newsFeed.innerHTML = '<div class="loading">No news available right now... which is probably good news? 🤷‍♂️</div>';
-                return;
-            }
-
-            const newsHTML = newsItems.map((item, idx) => {
-                const date = new Date(item.pubDate);
-                const timeAgo = getTimeAgo(date);
-                // We'll keep link in object so we can open in-panel if internal
-                // Use data-index to map click to newsItems
-                return `
-                    <div class="news-item" data-idx="${idx}">
-                        <div class="news-title">${escapeHtml(item.title)}</div>
-                        <div class="news-source">${escapeHtml(item.source)} • ${timeAgo}</div>
-                    </div>
-                `;
-            }).join('');
-
-            newsFeed.innerHTML = newsHTML;
-
-            // attach click handlers to open the detail panel (internal, themed)
-            newsFeed.querySelectorAll('.news-item').forEach(el => {
-                el.addEventListener('click', () => {
-                    const idx = Number(el.getAttribute('data-idx'));
-                    openNewsDetail(newsItems[idx]);
-                });
-            });
-        }
-
-        function updateTickerContent(newsItems){
-            if (!newsItems || newsItems.length === 0) return;
-            const ticker = document.getElementById('tickerContent');
-            const headlines = newsItems.slice(0,6).map(i => i.title).join(' • ');
-            ticker.innerHTML = `<span class="breaking-label">🚨 LIVE</span> ${escapeHtml(headlines)} • `;
-        }
-
-        function getTimeAgo(date){
-            const now = new Date();
-            const diffMs = now - date;
-            const diffMins = Math.floor(diffMs / 60000);
-            const diffHours = Math.floor(diffMs / 3600000);
-            const diffDays = Math.floor(diffMs / 86400000);
-            if (diffMins < 1) return 'Just now';
-            if (diffMins < 60) return `${diffMins}m ago`;
-            if (diffHours < 24) return `${diffHours}h ago`;
-            return `${diffDays}d ago`;
-        }
-
-        function animateChaosLevel(){
-            setInterval(()=> {
-                currentChaos = (currentChaos + 1) % chaosWords.length;
-                document.getElementById('chaosLevel').textContent = chaosWords[currentChaos];
-            }, 5000);
-        }
-
-        /******************************
-         * Tariff number animation
-         ******************************/
-        function updateTariffAnimation(){
-            const tariffDisplay = document.getElementById('tariffRate');
-            let current = 0;
-            const target = 18;
-            const interval = setInterval(()=> {
-                current += 1;
-                tariffDisplay.textContent = current + '%';
-                if (current >= target){
-                    clearInterval(interval);
-                    setTimeout(()=> {
-                        tariffDisplay.style.color = getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#FF6B6B';
-                        tariffDisplay.style.transform = 'scale(1.08)';
-                        setTimeout(()=> tariffDisplay.style.transform = 'scale(1)', 500);
-                    }, 100);
-                }
-            }, 90);
-        }
-
-        /******************************
-         * Auto-refresh & refresh button
-         ******************************/
-        function startAutoRefresh(){
-            newsUpdateInterval = setInterval(()=> {
-                console.log('🔄 Auto-refreshing news feeds...');
-                fetchAllNews();
-                updateLastRefreshTime();
-            }, 300000); // 5 minutes
-        }
-
-        function setupRefreshButton(){
-            const button = document.getElementById('refreshBtn');
-            button.addEventListener('click', () => {
-                button.style.transform = 'scale(0.86)';
-                const prev = button.innerHTML;
-                button.innerHTML = '⏳';
-                fetchAllNews();
-                updateLastRefreshTime();
-                setTimeout(()=> {
-                    button.style.transform = '';
-                    button.innerHTML = prev;
-                }, 1000);
-            });
-        }
-
-        // Pause auto-refresh when not visible
-        document.addEventListener('visibilitychange', ()=> {
-            if (document.hidden) {
-                if (newsUpdateInterval) clearInterval(newsUpdateInterval);
-            } else {
-                startAutoRefresh();
-                fetchAllNews();
-            }
-        });
-
-        /******************************
-         * In-theme detail panel for news
-         ******************************/
-        const detailPanel = document.getElementById('detailPanel');
-        const detailTitle = document.getElementById('detailTitle');
-        const detailSource = document.getElementById('detailSource');
-        const detailBody = document.getElementById('detailBody');
-        const detailClose = document.getElementById('detailClose');
-        const openExternalBtn = document.getElementById('openExternalBtn');
-
-        let currentExternalUrl = '#';
-
-        function openNewsDetail(item){
-            detailTitle.textContent = item.title;
-            detailSource.textContent = `${item.source} • ${getTimeAgo(new Date(item.pubDate))}`;
-            // brief content sanitization / fallback
-            detailBody.innerHTML = item.content ? escapeHtml(item.content).slice(0,1200) + (item.content.length>1200?'...':'') : 'No preview available.';
-            currentExternalUrl = item.link || '#';
-            openExternalBtn.style.display = (currentExternalUrl && currentExternalUrl !== '#') ? 'inline-block' : 'none';
-            openExternalBtn.onclick = ()=> {
-                // If external, open in new tab (can't force their styles). We keep in-theme panel open.
-                window.open(currentExternalUrl, '_blank', 'noopener');
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- CONFIGURATION ---
+            const RSS_FEEDS = [
+                { name: 'Reuters', url: 'https://feeds.reuters.com/Reuters/worldNews' },
+                { name: 'BBC', url: 'https://feeds.bbci.co.uk/news/world/rss.xml' },
+                { name: 'AP', url: 'https://rss.apnews.com/AP-Top-News' },
+                { name: 'Al Jazeera', url: 'https://www.aljazeera.com/xml/rss/all.xml' },
+                { name: 'NPR', url: 'https://feeds.npr.org/1001/rss.xml' }
+            ];
+            // Location-specific RSS feeds
+            const LOCAL_RSS_FEEDS = {
+                'IN': [ // India
+                    { name: 'Times of India', url: 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms' },
+                    { name: 'The Hindu', url: 'https://www.thehindu.com/news/national/feeder/default.rss' }
+                ],
+                'US': [ // United States
+                    { name: 'NYT', url: 'https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml'},
+                    { name: 'WSJ', url: 'https://feeds.a.dj.com/rss/RSSWorldNews.xml'}
+                ]
+                // Add more countries as needed
             };
-            detailPanel.classList.add('show');
-            detailPanel.setAttribute('aria-hidden','false');
-            // push state to allow back navigation
-            history.pushState({panelOpen:true}, '', '#news-detail');
-        }
+            const RSS_PROXY = 'https://api.allorigins.win/get?url=';
+            const THEMES = [
+                { name: 'Serene Dawn', class: 'theme-0' },
+                { name: 'Midnight Matrix', class: 'theme-1' },
+                { name: 'Retro Terminal', class: 'theme-2' },
+                { name: 'Sahara Sunset', class: 'theme-3' },
+                { name: 'Synthwave Grid', class: 'theme-4' }
+            ];
+            const CHAOS_LEVELS = ['Tranquil ✨', 'Slightly Odd 🤔', 'Moderately Spicy 🌶️', 'Quite Dramatic 🎭', 'Peak Weirdness 🌪️'];
+            const MARKET_TICKERS = [
+                { name: 'Dow Jones', value: 38850.21, change: 0 },
+                { name: 'Nikkei 225', value: 39210.87, change: 0 },
+                { name: 'FTSE 100', value: 8247.11, change: 0 }
+            ];
 
-        detailClose.addEventListener('click', closeDetailPanel);
-        function closeDetailPanel(){
-            detailPanel.classList.remove('show');
-            detailPanel.setAttribute('aria-hidden','true');
-            // go back in history if we pushed
-            if (location.hash === '#news-detail') history.back();
-        }
+            // --- DOM ELEMENTS ---
+            const newsFeedEl = document.getElementById('newsFeed');
+            const localNewsFeedEl = document.getElementById('localNewsFeed');
+            const newsStatusIndicatorEl = document.getElementById('newsStatusIndicator');
+            const newsStatusTextEl = document.getElementById('newsStatusText');
+            const lastUpdateEl = document.getElementById('lastUpdate');
+            const chaosLevelEl = document.getElementById('chaosLevel');
+            const marketDataEl = document.getElementById('marketData');
+            const weatherDataEl = document.getElementById('weatherData');
+            const localIntelEl = document.getElementById('localIntel');
+            const themeSwitcherEl = document.getElementById('themeSwitcher');
+            const notificationEl = document.getElementById('customNotification');
 
-        // handle back button to close panel
-        window.addEventListener('popstate', (ev)=> {
-            if (!ev.state || !ev.state.panelOpen) {
-                // if no state, ensure panel closed
-                detailPanel.classList.remove('show');
-                detailPanel.setAttribute('aria-hidden','true');
+            // --- STATE ---
+            let currentChaosIndex = 0;
+
+            // --- THEME LOGIC ---
+            function applyTheme(themeClass) {
+                document.documentElement.className = '';
+                document.documentElement.classList.add(themeClass);
+                localStorage.setItem('preferredTheme', themeClass);
             }
+
+            function initializeTheme() {
+                const preferredTheme = localStorage.getItem('preferredTheme');
+                if (preferredTheme && THEMES.some(t => t.class === preferredTheme)) {
+                    applyTheme(preferredTheme);
+                } else {
+                    const dayIndex = new Date().getDay() % THEMES.length;
+                    applyTheme(THEMES[dayIndex].class);
+                }
+                THEMES.forEach(theme => {
+                    const button = document.createElement('button');
+                    button.textContent = theme.name;
+                    button.className = 'py-1 px-3 rounded-md text-sm border transition-all';
+                    button.style.borderColor = 'var(--border-color)';
+                    button.onclick = () => {
+                        applyTheme(theme.class);
+                        showNotification(`Theme changed to ${theme.name}`);
+                    };
+                    themeSwitcherEl.appendChild(button);
+                });
+            }
+
+            // --- NOTIFICATION ---
+            function showNotification(message) {
+                notificationEl.textContent = message;
+                notificationEl.classList.add('show');
+                setTimeout(() => {
+                    notificationEl.classList.remove('show');
+                }, 3000);
+            }
+            
+            // --- LOCATION ---
+            function getLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(locationSuccess, locationError);
+                } else {
+                    handleLocationError("Geolocation is not supported by this browser.");
+                }
+            }
+
+            async function locationSuccess(position) {
+                const { latitude, longitude } = position.coords;
+                // In a real app, use a reverse geocoding API here.
+                // For this demo, we'll use a free, no-key service.
+                try {
+                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                    if (!response.ok) throw new Error('Reverse geocoding failed');
+                    const data = await response.json();
+                    
+                    const countryCode = data.address.country_code.toUpperCase();
+                    const cityName = data.address.city || data.address.town || data.address.village || 'Unknown Area';
+
+                    updateLocalIntel(cityName, latitude, longitude);
+                    updateWeatherForLocation(cityName, latitude, longitude);
+                    fetchLocalNews(countryCode);
+                } catch (error) {
+                    console.error("Reverse geocoding error:", error);
+                    // Fallback to hardcoded values if the API fails
+                    const countryCode = 'IN'; 
+                    const cityName = 'Bengaluru (Fallback)';
+                    updateLocalIntel(cityName, latitude, longitude);
+                    updateWeatherForLocation(cityName, latitude, longitude);
+                    fetchLocalNews(countryCode);
+                }
+            }
+
+            function locationError(error) {
+                let message = "Could not determine location.";
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        message = "Location access denied by user.";
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        message = "Location information is unavailable.";
+                        break;
+                    case error.TIMEOUT:
+                        message = "The request to get user location timed out.";
+                        break;
+                }
+                handleLocationError(message);
+            }
+            
+            function handleLocationError(message) {
+                 showNotification(message);
+                 localIntelEl.innerHTML = `<p class="text-sm" style="color: var(--muted-text);">${message}</p>`;
+                 weatherDataEl.innerHTML = `<p class="text-sm" style="color: var(--muted-text);">${message}</p>`;
+                 localNewsFeedEl.innerHTML = `<p class="text-sm" style="color: var(--muted-text);">${message}</p>`;
+            }
+
+            // --- NEWS FETCHING ---
+            async function fetchAndDisplayNews(feeds, element, itemCount) {
+                element.innerHTML = '<div class="space-y-3"><div class="h-16 rounded-lg skeleton"></div><div class="h-16 rounded-lg skeleton"></div></div>';
+                const promises = feeds.map(feed => 
+                    fetch(`${RSS_PROXY}${encodeURIComponent(feed.url)}`)
+                        .then(response => response.ok ? response.json() : Promise.reject(`Failed fetch for ${feed.name}`))
+                        .then(data => {
+                            const parser = new DOMParser();
+                            const xmlDoc = parser.parseFromString(data.contents, "text/xml");
+                            const items = Array.from(xmlDoc.querySelectorAll("item")).slice(0, itemCount);
+                            return items.map(item => ({
+                                title: item.querySelector('title')?.textContent || 'No title',
+                                link: item.querySelector('link')?.textContent || '#',
+                                pubDate: new Date(item.querySelector('pubDate')?.textContent || Date.now()),
+                                source: feed.name
+                            }));
+                        }).catch(error => {
+                            console.warn(`Failed to fetch ${feed.name}:`, error);
+                            return [];
+                        })
+                );
+
+                try {
+                    const results = await Promise.all(promises);
+                    const allNews = results.flat().sort((a, b) => b.pubDate - a.pubDate);
+                    
+                    if (allNews.length > 0) {
+                        displayNews(allNews, element);
+                        return allNews.length;
+                    } else {
+                        throw new Error("All news feeds failed for this category.");
+                    }
+                } catch (error) {
+                    element.innerHTML = `<p class="text-sm p-4 text-center" style="color: var(--muted-text);">${error.message}<br>The CORS proxy might be temporarily down.</p>`;
+                    return 0;
+                }
+            }
+            
+            async function fetchGlobalNews() {
+                 const count = await fetchAndDisplayNews(RSS_FEEDS, newsFeedEl, 15);
+                 newsStatusTextEl.textContent = `Live - ${count} articles loaded.`;
+                 newsStatusIndicatorEl.className = `w-3 h-3 rounded-full ${count > 0 ? 'bg-green-500' : 'bg-red-500'}`;
+            }
+
+            async function fetchLocalNews(countryCode) {
+                const localFeeds = LOCAL_RSS_FEEDS[countryCode];
+                if (localFeeds) {
+                    await fetchAndDisplayNews(localFeeds, localNewsFeedEl, 15);
+                } else {
+                    localNewsFeedEl.innerHTML = `<p class="text-sm p-4 text-center" style="color: var(--muted-text);">No local news feeds configured for your region (${countryCode}).</p>`;
+                }
+            }
+
+            function displayNews(newsItems, element) {
+                element.innerHTML = '';
+                newsItems.forEach(item => {
+                    const timeAgo = getTimeAgo(item.pubDate);
+                    const card = document.createElement('a');
+                    card.href = item.link;
+                    card.target = '_blank';
+                    card.rel = 'noopener noreferrer';
+                    card.className = 'block p-3 rounded-lg transition-colors';
+                    card.style.border = '1px solid transparent';
+                    card.onmouseover = () => card.style.backgroundColor = 'rgba(128, 128, 128, 0.1)';
+                    card.onmouseout = () => card.style.backgroundColor = 'transparent';
+                    
+                    card.innerHTML = `
+                        <h3 class="font-bold leading-tight">${escapeHtml(item.title)}</h3>
+                        <p class="text-xs mt-1" style="color: var(--muted-text);">${item.source} &bull; ${timeAgo}</p>
+                    `;
+                    element.appendChild(card);
+                });
+            }
+
+            // --- DYNAMIC WIDGETS ---
+            function updateChaosLevel() {
+                currentChaosIndex = (currentChaosIndex + 1) % CHAOS_LEVELS.length;
+                chaosLevelEl.textContent = CHAOS_LEVELS[currentChaosIndex];
+            }
+
+            function updateMarkets() {
+                marketDataEl.innerHTML = '';
+                MARKET_TICKERS.forEach(ticker => {
+                    const change = (Math.random() - 0.5) * (ticker.value * 0.01);
+                    ticker.value += change;
+                    const isUp = change >= 0;
+                    const color = isUp ? '#22c55e' : '#ef4444';
+                    const sign = isUp ? '+' : '';
+                    const arrow = isUp ? '▲' : '▼';
+
+                    const el = document.createElement('div');
+                    el.className = 'flex justify-between items-center text-sm';
+                    el.innerHTML = `
+                        <div>
+                            <p class="font-bold">${ticker.name}</p>
+                            <p class="font-mono text-xs">${ticker.value.toFixed(2)}</p>
+                        </div>
+                        <div class="text-right font-mono font-bold" style="color: ${color};">
+                            <span>${arrow} ${sign}${change.toFixed(2)}</span>
+                            <span class="block text-xs">(${(change / ticker.value * 100).toFixed(2)}%)</span>
+                        </div>
+                    `;
+                    marketDataEl.appendChild(el);
+                });
+            }
+            
+            async function updateWeatherForLocation(cityName, lat, lon) {
+                 // Using a free, no-key weather API
+                try {
+                    const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                    if (!response.ok) throw new Error('Weather API failed');
+                    const data = await response.json();
+                    const weather = data.current_weather;
+                    const temp = weather.temperature;
+                    const condition = getWeatherCondition(weather.weathercode);
+                    
+                    weatherDataEl.innerHTML = `
+                        <div class="text-center">
+                            <p class="text-lg font-bold">${cityName}</p>
+                            <p class="text-5xl my-2">${condition.icon}</p>
+                            <p class="text-2xl font-bold font-mono">${temp}°C</p>
+                            <p style="color: var(--muted-text);">${condition.text}</p>
+                        </div>
+                    `;
+                } catch (error) {
+                     console.error("Weather fetch error:", error);
+                     weatherDataEl.innerHTML = `<p class="text-sm text-center" style="color: var(--muted-text);">Could not fetch live weather data.</p>`;
+                }
+            }
+            
+            function getWeatherCondition(code) {
+                if (code === 0) return { icon: '☀️', text: 'Clear sky' };
+                if (code <= 3) return { icon: '⛅', text: 'Partly cloudy' };
+                if (code <= 48) return { icon: '🌫️', text: 'Fog' };
+                if (code <= 55) return { icon: '🌧️', text: 'Drizzle' };
+                if (code <= 65) return { icon: '🌧️', text: 'Rain' };
+                if (code <= 75) return { icon: '❄️', text: 'Snowfall' };
+                if (code <= 82) return { icon: '⛈️', text: 'Rain showers' };
+                if (code <= 99) return { icon: '⛈️', text: 'Thunderstorm' };
+                return { icon: '🌍', text: 'Unknown' };
+            }
+
+            function updateLocalIntel(cityName, lat, lon) {
+                localIntelEl.innerHTML = `
+                    <h3 class="font-bold text-sm uppercase tracking-wider" style="color: var(--muted-text);">Local Intel</h3>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="font-semibold">City:</span>
+                        <span class="font-bold">${cityName}</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="font-semibold">Coords:</span>
+                        <span class="font-mono">${lat.toFixed(2)}, ${lon.toFixed(2)}</span>
+                    </div>
+                `;
+            }
+
+            // --- UTILITIES ---
+            function updateLastRefreshTime() {
+                lastUpdateEl.textContent = new Date().toLocaleTimeString();
+            }
+
+            function getTimeAgo(date) {
+                const now = new Date();
+                const diffMs = now - date;
+                const diffMins = Math.round(diffMs / 60000);
+                if (diffMins < 1) return 'just now';
+                if (diffMins < 60) return `${diffMins}m ago`;
+                const diffHours = Math.round(diffMins / 60);
+                if (diffHours < 24) return `${diffHours}h ago`;
+                const diffDays = Math.round(diffHours / 24);
+                return `${diffDays}d ago`;
+            }
+
+            function escapeHtml(unsafe) {
+                return unsafe
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+
+            // --- INITIALIZATION & INTERVALS ---
+            function initializeDashboard() {
+                initializeTheme();
+                getLocation(); // Ask for location first
+                fetchGlobalNews();
+                updateMarkets();
+                updateChaosLevel();
+                updateLastRefreshTime();
+
+                setInterval(fetchGlobalNews, 5 * 60 * 1000);
+                setInterval(updateMarkets, 5000);
+                setInterval(updateChaosLevel, 6000);
+                setInterval(updateLastRefreshTime, 60 * 1000);
+            }
+
+            initializeDashboard();
         });
-
-        /******************************
-         * Utilities
-         ******************************/
-        function escapeHtml(unsafe) {
-            if (!unsafe) return '';
-            return String(unsafe)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
-        }
-
-        // small protection for logging uncaught errors
-        window.addEventListener('error', function(e){ console.warn('Page error:', e.error); });
-
-        /******************************
-         * Optional: allow user to pin a theme
-         ******************************/
-        // click on title to pin the current theme
-        document.querySelector('.title').addEventListener('dblclick', ()=> {
-            // toggle pinned theme
-            const idx = getThemeIndex();
-            const curPinned = localStorage.getItem('preferredTheme');
-            if (curPinned === String(idx)) {
-                localStorage.removeItem('preferredTheme');
-                alert('Theme unpinned. Theme will now follow day cycle.');
-            } else {
-                localStorage.setItem('preferredTheme', idx);
-                alert('Theme pinned! This style will persist until you reset it.');
-            }
-            // reload to apply (or you could just call applyTheme)
-            applyTheme(getThemeIndex());
-        });
-
-        /******************************
-         * Make sure theme updates on day change (if user keeps page open)
-         ******************************/
-        setInterval(()=> {
-            const last = Number(localStorage.getItem('lastAppliedTheme') || -1);
-            const nowIdx = getThemeIndex();
-            if (last !== nowIdx && localStorage.getItem('preferredTheme')===null) {
-                applyTheme(nowIdx);
-            }
-        }, 60000); // check every minute
-
     </script>
 </body>
+
 </html>
