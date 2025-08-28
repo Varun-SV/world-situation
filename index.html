@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>🌍 World Situation Dashboard 2025 - It's Getting Weird Out Here</title>
+
+    <style>
+        /* ===== Theme variables and general resets ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root{
+            --bg-gradient: linear-gradient(45deg, #FF6B6B, #4ECDC4, #45B7D1, #96CEB4, #FECA57);
+            --bg-size: 400% 400%;
+            --accent: #FF6B6B;
+            --widget-bg: rgba(255,255,255,0.95);
+            --text-color: #333;
+            --muted: #666;
+            --font: "Comic Sans MS", cursive, sans-serif;
+            --glass: rgba(255,255,255,0.85);
+            --widget-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* 7 theme classes: theme-0 .. theme-6. Each overrides a few variables
+           to produce distinct looks. The choice below uses color palettes,
+           fonts and subtle differences. */
+        .theme-0 { /* Candy Vaporwave */
+            --bg-gradient: linear-gradient(135deg,#ff9a9e,#fad0c4,#ffd1ff);
+            --accent: #FF6B6B;
+            --widget-bg: rgba(255,255,255,0.95);
+            --text-color: #2b2b2b;
+            --muted: #444;
+            --font: "Comic Sans MS", cursive, sans-serif;
+        }
+        .theme-1 { /* Sleek Night */
+            --bg-gradient: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+            --accent: #4ECDC4;
+            --widget-bg: rgba(255,255,255,0.06);
+            --text-color: #e8f6f5;
+            --muted: #cbd5d5;
+            --font: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            --widget-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+        .theme-2 { /* Retro Terminal */
+            --bg-gradient: linear-gradient(135deg,#0b1b0b,#183018);
+            --accent: #7CFC00;
+            --widget-bg: rgba(10,10,10,0.9);
+            --text-color: #BFFFBF;
+            --muted: #9ad99a;
+            --font: "Courier New", monospace;
+            --widget-shadow: 0 8px 30px rgba(0,0,0,0.7);
+        }
+        .theme-3 { /* Pastel Sunrise */
+            --bg-gradient: linear-gradient(135deg,#FFD194,#D1913C,#F6D365);
+            --accent: #FF8A65;
+            --widget-bg: rgba(255,255,255,0.97);
+            --text-color: #2c2c2c;
+            --muted: #666;
+            --font: "Georgia", serif;
+        }
+        .theme-4 { /* High-contrast Neon */
+            --bg-gradient: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+            --accent: #FF00FF;
+            --widget-bg: rgba(20,20,20,0.95);
+            --text-color: #ffffff;
+            --muted: #d0d0d0;
+            --font: "Helvetica Neue", Arial, sans-serif;
+            --widget-shadow: 0 12px 40px rgba(255,0,255,0.08);
+        }
+        .theme-5 { /* Earthy Classic */
+            --bg-gradient: linear-gradient(135deg,#8E9EAB,#BED7E6);
+            --accent: #6B8E23;
+            --widget-bg: rgba(255,255,255,0.97);
+            --text-color: #2f2f2f;
+            --muted: #666;
+            --font: "Times New Roman", Times, serif;
+        }
+        .theme-6 { /* Playful Memphis */
+            --bg-gradient: linear-gradient(135deg,#f6d365,#fda085,#fbc2eb);
+            --accent: #00A8E8;
+            --widget-bg: rgba(255,255,255,0.96);
+            --text-color: #222;
+            --muted: #666;
+            --font: "Verdana", Geneva, Tahoma, sans-serif;
+        }
+
+        html, body { height: 100%; }
+        body {
+            font-family: var(--font);
+            background: var(--bg-gradient);
+            background-size: var(--bg-size);
+            animation: gradientShift 12s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--text-color);
+            transition: background 0.8s ease, color 0.6s ease;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header { text-align: center; margin-bottom: 20px; position: relative; }
+        .title {
+            font-size: 3.2em;
+            color: var(--text-color);
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+            animation: bounce 2.2s ease-in-out infinite;
+            margin-bottom: 8px;
+        }
+        @keyframes bounce {
+            0%,20%,50%,80%,100%{ transform: translateY(0); }
+            40%{ transform: translateY(-8px); }
+            60%{ transform: translateY(-4px); }
+        }
+        .subtitle {
+            font-size: 1.05em;
+            color: var(--muted);
+            background: rgba(255,255,255,0.12);
+            padding: 8px 14px;
+            border-radius: 18px;
+            display: inline-block;
+            animation: pulse 3s ease-in-out infinite;
+            backdrop-filter: blur(6px);
+        }
+        @keyframes pulse { 0%{ transform:scale(1);}50%{transform:scale(1.03);}100%{transform:scale(1);} }
+
+        /* Dashboard grid & widgets */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(320px,1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .widget {
+            background: var(--widget-bg);
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: var(--widget-shadow);
+            transform: translateY(0);
+            transition: all 0.32s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .widget:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 18px 36px rgba(0,0,0,0.15); }
+        .widget::before {
+            content:'';
+            position:absolute; top:0; left:-120%;
+            width:100%; height:100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+            transition: left 0.8s ease;
+        }
+        .widget:hover::before { left: 120%; }
+
+        .widget-title { font-size: 1.5em; color: var(--text-color); margin-bottom: 12px; text-align: center; z-index:2; position:relative; }
+
+        /* Tariff meter & flags */
+        .tariff-meter { text-align: center; position: relative; }
+        .meter-display {
+            font-size: 3.3em;
+            color: var(--accent);
+            font-weight: 800;
+            animation: countUp 900ms cubic-bezier(.2,.8,.2,1);
+            text-shadow: 1px 1px 6px rgba(0,0,0,0.12);
+        }
+        @keyframes countUp { from{ transform: scale(0.6); opacity:0;} to{ transform: scale(1); opacity:1; } }
+        .meter-label { font-size: 1em; color: var(--muted); margin-top: 6px; }
+
+        .country-flags { display:flex; justify-content:space-around; margin-top:14px; flex-wrap:wrap; gap:8px; }
+        .flag-item { text-align:center; margin:6px; padding:8px; background: rgba(0,0,0,0.06); border-radius:10px; transition: all 0.25s ease; cursor:pointer; }
+        .flag-item:hover { transform: scale(1.05); background: rgba(0,0,0,0.12); }
+        .flag-emoji { font-size:1.6em; display:block; margin-bottom:6px; animation: wave 2.2s ease-in-out infinite; }
+        @keyframes wave { 0%,100%{ transform: rotate(0deg);}25%{transform:rotate(-5deg);}75%{transform:rotate(5deg);} }
+
+        /* News ticker */
+        .news-ticker { background: rgba(0,0,0,0.24); color: white; padding: 12px; border-radius: 12px; margin: 18px 0; position: relative; overflow:hidden; }
+        .ticker-content { animation: scroll-left 28s linear infinite; white-space:nowrap; font-size:1.02em; }
+        @keyframes scroll-left { 0%{ transform:translate3d(100%,0,0);} 100%{ transform:translate3d(-100%,0,0);} }
+        .breaking-label { background: var(--accent); color: white; padding:4px 8px; border-radius:6px; font-weight:700; margin-right:8px; animation: blink 1.6s infinite; }
+        @keyframes blink { 0%,50%{ opacity:1;}51%,100%{ opacity:0.3;} }
+
+        /* world map big emoji */
+        .world-map { text-align:center; font-size:12.5em; animation: spin 26s linear infinite; margin: 12px 0; filter: drop-shadow(0 0 18px rgba(0,0,0,0.18)); }
+        @keyframes spin { from{ transform: rotate(0deg);} to{ transform: rotate(360deg);} }
+
+        /* news feed and items */
+        .news-feed { max-height: 380px; overflow-y:auto; border-radius:10px; background: rgba(255,255,255,0.02); padding:8px; }
+        .news-item { padding:12px; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background-color 0.25s ease; cursor:pointer; border-radius:6px; margin-bottom:6px; }
+        .news-item:hover { background-color: rgba(255,255,255,0.03); }
+        .news-title { font-weight:700; color:var(--text-color); margin-bottom:6px; }
+        .news-source { font-size:0.92em; color:var(--muted); font-style:italic; }
+
+        .loading { text-align:center; color:var(--muted); padding:18px; }
+
+        /* economic indicators */
+        .economic-indicator { display:flex; justify-content:space-between; align-items:center; margin:10px 0; padding:10px; background: rgba(0,0,0,0.03); border-radius:10px; transition: all 0.28s ease; }
+        .economic-indicator:hover { transform: translateX(6px); background: rgba(0,0,0,0.06); }
+        .indicator-label { font-weight:700; color:var(--text-color); }
+        .indicator-value { font-size:1.05em; font-weight:800; color:var(--accent); }
+
+        .fun-fact { background: linear-gradient(45deg,#FFE082,#FFCC02); border-radius:12px; padding:12px; margin:12px 0; text-align:center; border: 2px dashed rgba(255,160,0,0.8); animation: wiggle 3s ease-in-out infinite; }
+        @keyframes wiggle { 0%,100%{ transform: rotate(0deg);}25%{transform:rotate(1deg);}75%{transform:rotate(-1deg);} }
+
+        /* refresh button */
+        .refresh-button {
+            position: fixed; bottom: 28px; right: 28px;
+            background: var(--accent);
+            color: white; border: none; border-radius: 50%;
+            width: 60px; height: 60px; font-size: 1.25em; cursor:pointer;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25); transition:all 0.25s ease; animation: float 3s ease-in-out infinite;
+        }
+        .refresh-button:hover { transform: scale(1.06); filter:brightness(1.05); }
+        @keyframes float { 0%,100%{ transform: translateY(0);}50%{ transform: translateY(-8px);} }
+
+        .last-updated { text-align:center; color:var(--muted); font-size:0.95em; margin-top:14px; opacity:0.9; }
+
+        .status-indicator { display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:8px; animation:pulse-dot 2s infinite; vertical-align:middle; }
+        .status-online { background-color:#4CAF50; }
+        .status-loading { background-color:#FFC107; }
+        .status-error { background-color:#F44336; }
+        @keyframes pulse-dot { 0%{opacity:1;}50%{opacity:0.5;}100%{opacity:1;} }
+
+        /* small nav & pages for SPA */
+        .top-nav { display:flex; justify-content:center; gap:12px; margin:12px 0; flex-wrap:wrap; }
+        .nav-btn { padding:8px 12px; border-radius:10px; border: none; cursor:pointer; background: rgba(255,255,255,0.08); color:var(--text-color); font-weight:700; transition:all 0.2s ease; }
+        .nav-btn:hover { transform: translateY(-3px); background: rgba(255,255,255,0.12); }
+        .page { display:block; }
+        .hidden { display:none; }
+
+        /* detail modal/panel */
+        .detail-panel {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+            max-width: 780px; width: calc(100% - 40px); background: var(--widget-bg); padding: 18px; border-radius: 12px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.45); z-index: 9999; display:none;
+        }
+        .detail-panel.show { display:block; animation: panelIn 240ms ease-out; }
+        @keyframes panelIn { from{ transform: translate(-50%,-46%) scale(0.98); opacity:0; } to{ transform:translate(-50%,-50%) scale(1); opacity:1; } }
+        .detail-close { position:absolute; top:10px; right:12px; background:transparent; border:none; font-size:1.25em; cursor:pointer; color:var(--muted); }
+        .detail-title { font-size:1.25em; font-weight:800; margin-bottom:8px; color:var(--text-color); }
+
+        /* small responsive tweaks */
+        @media (max-width:768px){
+            .title{ font-size:2.2em; }
+            .world-map{ font-size:8.5em; }
+            .meter-display{ font-size:2.6em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">🌍 World Situation Dashboard 2025</h1>
+            <p class="subtitle">📈 "It's Getting Interesting Out Here" 🎢</p>
+            <div class="top-nav" id="topNav">
+                <button class="nav-btn" data-page="home">Home</button>
+                <button class="nav-btn" data-page="tariff">Tariff-O-Meter™</button>
+                <button class="nav-btn" data-page="news">Live News Feed</button>
+                <button class="nav-btn" data-page="about">About</button>
+            </div>
+        </div>
+
+        <div class="news-ticker">
+            <div class="ticker-content" id="tickerContent">
+                <span class="breaking-label">🚨 LIVE</span>
+                Welcome to the World Situation Dashboard! • Tariff headlines loading...
+            </div>
+        </div>
+
+        <div class="dashboard">
+            <!-- Page: HOME (default) -->
+            <section id="page-home" class="page widget">
+                <h2 class="widget-title">🌍 Global Situation Monitor</h2>
+                <div class="world-map">🌍</div>
+                <div class="economic-indicator">
+                    <span class="indicator-label">World Chaos Level:</span>
+                    <span class="indicator-value" id="chaosLevel">Moderately Spicy 🌶️</span>
+                </div>
+                <div class="economic-indicator">
+                    <span class="indicator-label">Trade War Status:</span>
+                    <span class="indicator-value">Active & Expanding 📈</span>
+                </div>
+                <div class="economic-indicator">
+                    <span class="indicator-label">COVID-19 Activity:</span>
+                    <span class="indicator-value">Rising (11% positivity) ⬆️</span>
+                </div>
+                <div class="fun-fact">
+                    <strong>🤯 Fun Fact:</strong><br>
+                    The current tariff situation is like playing global Jenga, but everyone's blindfolded and the blocks are made of money!
+                </div>
+            </section>
+
+            <!-- Page: TARIFF -->
+            <section id="page-tariff" class="page widget hidden">
+                <h2 class="widget-title">🎯 Tariff-O-Meter™</h2>
+                <div class="tariff-meter">
+                    <div class="meter-display" id="tariffRate">18%</div>
+                    <div class="meter-label">Current US Tariff Rate<br>(Highest Since 1934! 🏆)</div>
+
+                    <div class="country-flags">
+                        <div class="flag-item" title="China: 10% + extras">
+                            <span class="flag-emoji">🇨🇳</span>
+                            <small>10%</small>
+                        </div>
+                        <div class="flag-item" title="Canada & Mexico: 25%">
+                            <span class="flag-emoji">🇨🇦</span>
+                            <small>25%</small>
+                        </div>
+                        <div class="flag-item" title="Mexico: 25%">
+                            <span class="flag-emoji">🇲🇽</span>
+                            <small>25%</small>
+                        </div>
+                        <div class="flag-item" title="India: 50% (Ouch!)">
+                            <span class="flag-emoji">🇮🇳</span>
+                            <small>50%</small>
+                        </div>
+                        <div class="flag-item" title="Vietnam: 20%">
+                            <span class="flag-emoji">🇻🇳</span>
+                            <small>20%</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Page: NEWS -->
+            <section id="page-news" class="page widget hidden">
+                <h2 class="widget-title">📰 Live News Feed</h2>
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                    <div class="status-indicator status-loading" id="newsStatus"></div>
+                    <span id="newsStatusText">Fetching latest chaos...</span>
+                </div>
+                <div class="news-feed" id="newsFeed">
+                    <div class="loading">Loading the latest world drama... 🍿</div>
+                </div>
+            </section>
+
+            <!-- Page: ECON -->
+            <section id="page-econ" class="page widget hidden">
+                <h2 class="widget-title">📊 Economic Weirdness Index</h2>
+                <div class="economic-indicator">
+                    <span class="indicator-label">Tariff Revenue (Monthly):</span>
+                    <span class="indicator-value">$27B 💰</span>
+                </div>
+                <div class="economic-indicator">
+                    <span class="indicator-label">Cost per US Family:</span>
+                    <span class="indicator-value">$2,400/year 😱</span>
+                </div>
+                <div class="economic-indicator">
+                    <span class="indicator-label">Mexico Steel Exports:</span>
+                    <span class="indicator-value">-16.6% 📉</span>
+                </div>
+                <div class="economic-indicator">
+                    <span class="indicator-label">Property Investment (China):</span>
+                    <span class="indicator-value">-12% 🏠💸</span>
+                </div>
+            </section>
+
+            <!-- Page: ABOUT -->
+            <section id="page-about" class="page widget hidden">
+                <h2 class="widget-title">ℹ️ About This Dashboard</h2>
+                <p style="color:var(--muted); margin-bottom:10px;">
+                    This single-file dashboard cycles through 7 different themes (one per day). It's an SPA — so
+                    internal navigation preserves the theme. News comes from RSS feeds with fallbacks and mock content.
+                </p>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <button class="nav-btn" onclick="applyTheme((getThemeIndex()+1)%7)">Try next theme</button>
+                    <button class="nav-btn" onclick="localStorage.removeItem('preferredTheme'); location.reload();">Reset theme</button>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="last-updated">
+            <span class="status-indicator status-online" id="updateStatus"></span>
+            Last updated: <span id="lastUpdate">Loading...</span> • Auto-refresh every 5 minutes 🔄
+        </div>
+    </div>
+
+    <button class="refresh-button" id="refreshBtn" title="Refresh All Data">🔄</button>
+
+    <!-- Detail panel for news items (in-theme) -->
+    <div class="detail-panel" id="detailPanel" role="dialog" aria-hidden="true">
+        <button class="detail-close" id="detailClose" title="Close">✕</button>
+        <div class="detail-title" id="detailTitle">Title</div>
+        <div style="color:var(--muted); margin-bottom:10px;" id="detailSource">Source • time</div>
+        <div id="detailBody" style="line-height:1.45; color:var(--text-color);">
+            Content preview...
+        </div>
+        <div style="text-align:right; margin-top:12px;">
+            <button class="nav-btn" id="openExternalBtn">Open External</button>
+        </div>
+    </div>
+
+    <script>
+        /******************************
+         * THEME LOGIC (7-day cycle)
+         ******************************/
+        // Use a daily index so the theme changes each calendar day (looping every 7 days).
+        function getThemeIndex() {
+            // You can use a stored preferredTheme override
+            const preferred = localStorage.getItem('preferredTheme');
+            if (preferred !== null) return Number(preferred);
+
+            const dayNumber = Math.floor(Date.now() / 86400000); // days since epoch
+            return dayNumber % 7;
+        }
+
+        // Apply theme class to <html> (or body). Also update subtle properties if needed.
+        function applyTheme(index) {
+            index = Number(index) % 7;
+            document.documentElement.classList.remove(...Array.from({length:7}, (_,i)=>'theme-'+i));
+            document.documentElement.classList.add('theme-' + index);
+
+            // store last-applied theme visually (not mandatory)
+            document.documentElement.style.transition = 'background 0.6s ease, color 0.5s ease';
+            localStorage.setItem('lastAppliedTheme', index);
+        }
+
+        // On first load apply theme based on day
+        applyTheme(getThemeIndex());
+
+        /******************************
+         * SPA ROUTING (simple hash-based)
+         ******************************/
+        const pages = ['home','tariff','news','econ','about'];
+        function showPage(page) {
+            pages.forEach(p => {
+                const el = document.getElementById('page-' + p);
+                if (!el) return;
+                if (p === page) el.classList.remove('hidden');
+                else el.classList.add('hidden');
+            });
+            // sync selected nav button styles
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.style.outline = '');
+            document.querySelectorAll('.nav-btn[data-page="'+page+'"]').forEach(b => b.style.outline = '2px solid rgba(255,255,255,0.12)');
+        }
+
+        // attach nav buttons
+        document.querySelectorAll('.nav-btn[data-page]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const page = btn.getAttribute('data-page');
+                location.hash = '#' + page;
+            });
+        });
+
+        // on hashchange show relevant page
+        function handleHash() {
+            const hash = location.hash.replace('#','') || 'home';
+            if (pages.includes(hash)) showPage(hash);
+            else showPage('home');
+        }
+        window.addEventListener('hashchange', handleHash);
+
+        // initialize route
+        if (!location.hash) location.hash = '#home';
+        handleHash();
+
+        /******************************
+         * TICKER AND NEWS FETCHING (as before)
+         ******************************/
+        const RSS_FEEDS = [
+            'https://feeds.reuters.com/Reuters/worldNews',
+            'https://feeds.bbci.co.uk/news/world/rss.xml',
+            'https://rss.cnn.com/rss/edition.rss',
+            'https://feeds.npr.org/1001/rss.xml'
+        ];
+        const RSS_TO_JSON_API = 'https://api.rss2json.com/v1/api.json?rss_url=';
+        const CORS_PROXY = 'https://api.allorigins.win/get?url=';
+
+        let newsUpdateInterval;
+        let chaosWords = ['Mildly Chaotic 🤪','Moderately Spicy 🌶️','Quite Dramatic 🎭','Absolutely Bonkers 🤡','Peak Weirdness 🌪️'];
+        let currentChaos = 0;
+
+        document.addEventListener('DOMContentLoaded', function(){
+            updateLastRefreshTime();
+            fetchAllNews();
+            startAutoRefresh();
+            animateChaosLevel();
+            updateTariffAnimation();
+            setupRefreshButton();
+            console.log('🌍 World Situation Dashboard loading with themes...');
+        });
+
+        function updateLastRefreshTime(){
+            const now = new Date();
+            document.getElementById('lastUpdate').textContent = now.toLocaleString();
+        }
+
+        function updateStatus(elementId, status, text){
+            const statusEl = document.getElementById(elementId);
+            const textEl = document.getElementById(elementId + 'Text') || document.getElementById(elementId.replace('Status','StatusText'));
+            statusEl.className = `status-indicator status-${status}`;
+            if (textEl) textEl.textContent = text;
+        }
+
+        async function fetchAllNews(){
+            updateStatus('newsStatus','loading','Fetching latest global drama...');
+            const newsFeed = document.getElementById('newsFeed');
+            newsFeed.innerHTML = '<div class="loading">🌍 Gathering world news from the chaos dimension...</div>';
+
+            try {
+                let allNews = [];
+
+                for (const feedUrl of RSS_FEEDS){
+                    try {
+                        const news = await fetchRSSFeed(feedUrl);
+                        if (news && news.length>0) allNews = allNews.concat(news.slice(0,3));
+                    } catch (err) {
+                        console.warn('Feed failed:', feedUrl, err);
+                    }
+                }
+
+                if (allNews.length < 5){
+                    allNews = allNews.concat([
+                        { title: "🎯 US Tariff Rate Hits 18% - Highest Since 1934!", link:"#", pubDate: new Date().toISOString(), source:"Tariff Watch", content:"Tariffs spiked to 18%... (mock)" },
+                        { title: "🇮🇳 India Faces 50% Combined Tariffs Over Russian Oil Purchases", link:"#", pubDate: new Date().toISOString(), source:"Trade Wars Daily", content:"Trade repercussions emerge..." },
+                        { title: "🇲🇽 Mexico Steel Exports Drop 16.6% Amid Tariff Negotiations", link:"#", pubDate: new Date().toISOString(), source:"Steel & Drama Report", content:"Exports slump..." },
+                        { title: "💰 Americans Now Pay $2,400/Year More Due to Trade Policies", link:"#", pubDate: new Date().toISOString(), source:"Wallet Impact News", content:"Average family costs..." },
+                        { title: "🌍 Global COVID-19 Test Positivity Reaches 11% - Time for Masks Again?", link:"#", pubDate: new Date().toISOString(), source:"Pandemic Tracker", content:"Positivity rising..." }
+                    ]);
+                }
+
+                // Sort & limit
+                allNews.sort((a,b)=> new Date(b.pubDate) - new Date(a.pubDate));
+                allNews = allNews.slice(0,10);
+
+                displayNews(allNews);
+                updateStatus('newsStatus','online','Live feed active');
+                updateTickerContent(allNews);
+            } catch (error) {
+                console.error('Error fetching news:', error);
+                updateStatus('newsStatus','error','Feed temporarily offline');
+                document.getElementById('newsFeed').innerHTML = `
+                    <div class="news-item">
+                        <div class="news-title">🚨 News Feed Temporarily Unavailable</div>
+                        <div class="news-source">But hey, tariffs are still at 18%! 📈</div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-title">📡 Attempting to reconnect to global news matrix...</div>
+                        <div class="news-source">Please stand by while we untangle the internet</div>
+                    </div>
+                `;
+            }
+        }
+
+        async function fetchRSSFeed(feedUrl){
+            try {
+                const response = await fetch(`${RSS_TO_JSON_API}${encodeURIComponent(feedUrl)}&count=5`);
+                const data = await response.json();
+                if (data.status === 'ok' && data.items) {
+                    return data.items.map(item => ({ title:item.title, link:item.link, pubDate:item.pubDate, source: new URL(feedUrl).hostname, content:item.description || item.content || '' }));
+                }
+            } catch (err) {
+                console.warn('RSS2JSON failed, trying CORS fallback', err);
+            }
+
+            try {
+                const response = await fetch(`${CORS_PROXY}${encodeURIComponent(feedUrl)}`);
+                const data = await response.json();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
+                const items = xmlDoc.querySelectorAll('item');
+                return Array.from(items).slice(0,5).map(item => ({
+                    title: item.querySelector('title')?.textContent || 'News Update',
+                    link: item.querySelector('link')?.textContent || '#',
+                    pubDate: item.querySelector('pubDate')?.textContent || new Date().toISOString(),
+                    source: new URL(feedUrl).hostname,
+                    content: item.querySelector('description')?.textContent || ''
+                }));
+            } catch(err){
+                console.warn('CORS proxy also failed', err);
+                return [];
+            }
+        }
+
+        function displayNews(newsItems){
+            const newsFeed = document.getElementById('newsFeed');
+            if (!newsItems || newsItems.length===0){
+                newsFeed.innerHTML = '<div class="loading">No news available right now... which is probably good news? 🤷‍♂️</div>';
+                return;
+            }
+
+            const newsHTML = newsItems.map((item, idx) => {
+                const date = new Date(item.pubDate);
+                const timeAgo = getTimeAgo(date);
+                // We'll keep link in object so we can open in-panel if internal
+                // Use data-index to map click to newsItems
+                return `
+                    <div class="news-item" data-idx="${idx}">
+                        <div class="news-title">${escapeHtml(item.title)}</div>
+                        <div class="news-source">${escapeHtml(item.source)} • ${timeAgo}</div>
+                    </div>
+                `;
+            }).join('');
+
+            newsFeed.innerHTML = newsHTML;
+
+            // attach click handlers to open the detail panel (internal, themed)
+            newsFeed.querySelectorAll('.news-item').forEach(el => {
+                el.addEventListener('click', () => {
+                    const idx = Number(el.getAttribute('data-idx'));
+                    openNewsDetail(newsItems[idx]);
+                });
+            });
+        }
+
+        function updateTickerContent(newsItems){
+            if (!newsItems || newsItems.length === 0) return;
+            const ticker = document.getElementById('tickerContent');
+            const headlines = newsItems.slice(0,6).map(i => i.title).join(' • ');
+            ticker.innerHTML = `<span class="breaking-label">🚨 LIVE</span> ${escapeHtml(headlines)} • `;
+        }
+
+        function getTimeAgo(date){
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins}m ago`;
+            if (diffHours < 24) return `${diffHours}h ago`;
+            return `${diffDays}d ago`;
+        }
+
+        function animateChaosLevel(){
+            setInterval(()=> {
+                currentChaos = (currentChaos + 1) % chaosWords.length;
+                document.getElementById('chaosLevel').textContent = chaosWords[currentChaos];
+            }, 5000);
+        }
+
+        /******************************
+         * Tariff number animation
+         ******************************/
+        function updateTariffAnimation(){
+            const tariffDisplay = document.getElementById('tariffRate');
+            let current = 0;
+            const target = 18;
+            const interval = setInterval(()=> {
+                current += 1;
+                tariffDisplay.textContent = current + '%';
+                if (current >= target){
+                    clearInterval(interval);
+                    setTimeout(()=> {
+                        tariffDisplay.style.color = getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#FF6B6B';
+                        tariffDisplay.style.transform = 'scale(1.08)';
+                        setTimeout(()=> tariffDisplay.style.transform = 'scale(1)', 500);
+                    }, 100);
+                }
+            }, 90);
+        }
+
+        /******************************
+         * Auto-refresh & refresh button
+         ******************************/
+        function startAutoRefresh(){
+            newsUpdateInterval = setInterval(()=> {
+                console.log('🔄 Auto-refreshing news feeds...');
+                fetchAllNews();
+                updateLastRefreshTime();
+            }, 300000); // 5 minutes
+        }
+
+        function setupRefreshButton(){
+            const button = document.getElementById('refreshBtn');
+            button.addEventListener('click', () => {
+                button.style.transform = 'scale(0.86)';
+                const prev = button.innerHTML;
+                button.innerHTML = '⏳';
+                fetchAllNews();
+                updateLastRefreshTime();
+                setTimeout(()=> {
+                    button.style.transform = '';
+                    button.innerHTML = prev;
+                }, 1000);
+            });
+        }
+
+        // Pause auto-refresh when not visible
+        document.addEventListener('visibilitychange', ()=> {
+            if (document.hidden) {
+                if (newsUpdateInterval) clearInterval(newsUpdateInterval);
+            } else {
+                startAutoRefresh();
+                fetchAllNews();
+            }
+        });
+
+        /******************************
+         * In-theme detail panel for news
+         ******************************/
+        const detailPanel = document.getElementById('detailPanel');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailSource = document.getElementById('detailSource');
+        const detailBody = document.getElementById('detailBody');
+        const detailClose = document.getElementById('detailClose');
+        const openExternalBtn = document.getElementById('openExternalBtn');
+
+        let currentExternalUrl = '#';
+
+        function openNewsDetail(item){
+            detailTitle.textContent = item.title;
+            detailSource.textContent = `${item.source} • ${getTimeAgo(new Date(item.pubDate))}`;
+            // brief content sanitization / fallback
+            detailBody.innerHTML = item.content ? escapeHtml(item.content).slice(0,1200) + (item.content.length>1200?'...':'') : 'No preview available.';
+            currentExternalUrl = item.link || '#';
+            openExternalBtn.style.display = (currentExternalUrl && currentExternalUrl !== '#') ? 'inline-block' : 'none';
+            openExternalBtn.onclick = ()=> {
+                // If external, open in new tab (can't force their styles). We keep in-theme panel open.
+                window.open(currentExternalUrl, '_blank', 'noopener');
+            };
+            detailPanel.classList.add('show');
+            detailPanel.setAttribute('aria-hidden','false');
+            // push state to allow back navigation
+            history.pushState({panelOpen:true}, '', '#news-detail');
+        }
+
+        detailClose.addEventListener('click', closeDetailPanel);
+        function closeDetailPanel(){
+            detailPanel.classList.remove('show');
+            detailPanel.setAttribute('aria-hidden','true');
+            // go back in history if we pushed
+            if (location.hash === '#news-detail') history.back();
+        }
+
+        // handle back button to close panel
+        window.addEventListener('popstate', (ev)=> {
+            if (!ev.state || !ev.state.panelOpen) {
+                // if no state, ensure panel closed
+                detailPanel.classList.remove('show');
+                detailPanel.setAttribute('aria-hidden','true');
+            }
+        });
+
+        /******************************
+         * Utilities
+         ******************************/
+        function escapeHtml(unsafe) {
+            if (!unsafe) return '';
+            return String(unsafe)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        // small protection for logging uncaught errors
+        window.addEventListener('error', function(e){ console.warn('Page error:', e.error); });
+
+        /******************************
+         * Optional: allow user to pin a theme
+         ******************************/
+        // click on title to pin the current theme
+        document.querySelector('.title').addEventListener('dblclick', ()=> {
+            // toggle pinned theme
+            const idx = getThemeIndex();
+            const curPinned = localStorage.getItem('preferredTheme');
+            if (curPinned === String(idx)) {
+                localStorage.removeItem('preferredTheme');
+                alert('Theme unpinned. Theme will now follow day cycle.');
+            } else {
+                localStorage.setItem('preferredTheme', idx);
+                alert('Theme pinned! This style will persist until you reset it.');
+            }
+            // reload to apply (or you could just call applyTheme)
+            applyTheme(getThemeIndex());
+        });
+
+        /******************************
+         * Make sure theme updates on day change (if user keeps page open)
+         ******************************/
+        setInterval(()=> {
+            const last = Number(localStorage.getItem('lastAppliedTheme') || -1);
+            const nowIdx = getThemeIndex();
+            if (last !== nowIdx && localStorage.getItem('preferredTheme')===null) {
+                applyTheme(nowIdx);
+            }
+        }, 60000); // check every minute
+
+    </script>
+</body>
+</html>
