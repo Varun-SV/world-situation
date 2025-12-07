@@ -933,7 +933,6 @@ def main():
         st.markdown('<div class="section-header">⚙️ CONTROL CENTER</div>', unsafe_allow_html=True)
         
         # Theme Selection
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown("**🎨 Interface Theme**")
         selected_theme = st.selectbox(
             "Choose your theme",
@@ -941,10 +940,10 @@ def main():
             index=0,
             label_visibility="collapsed"
         )
-        st.markdown('</div>', unsafe_allow_html=True)
+        
+        st.markdown("---")
         
         # Location Settings
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown("**📍 Location Configuration**")
         
         location_presets = {
@@ -956,7 +955,7 @@ def main():
             "Custom": None
         }
         
-        location = st.selectbox("Select Location", list(location_presets.keys()))
+        location = st.selectbox("Select Location", list(location_presets.keys()), label_visibility="visible")
         
         if location == "Custom":
             city_name = st.text_input("City Name", "Metropolis")
@@ -966,19 +965,18 @@ def main():
             city_name = location
             custom_lat, custom_lon = location_presets[location]
         
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("---")
         
         # Refresh Settings
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown("**🔄 Data Refresh**")
         auto_refresh = st.checkbox("Auto-refresh (5 min)", value=False)
         if st.button("🔄 Refresh Now", use_container_width=True):
             st.cache_data.clear()
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
+        
+        st.markdown("---")
         
         # System Status
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.markdown("**📊 System Status**")
         st.markdown('<span class="badge badge-success">● ALL SYSTEMS OPERATIONAL</span>', unsafe_allow_html=True)
         st.markdown(f"""
@@ -988,7 +986,6 @@ def main():
             Data Sources: 12 Active
         </div>
         """, unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
 
     # Apply Selected Theme
     inject_premium_css(selected_theme)
