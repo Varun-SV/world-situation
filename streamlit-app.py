@@ -4,372 +4,267 @@ import requests
 import pandas as pd
 import plotly.graph_objects as go
 import random
-import time
 from datetime import datetime
 
 # -----------------------------------------------------------------------------
-# CONFIGURATION
+# PAGE CONFIG
 # -----------------------------------------------------------------------------
 st.set_page_config(
-    page_title="Pulse • World Dashboard",
-    page_icon="🌐",
+    page_title="World Situation Command Center",
+    page_icon="🛰️",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
 
 # -----------------------------------------------------------------------------
-# ENHANCED THEME ENGINE
+# THEMES & STYLING
 # -----------------------------------------------------------------------------
 THEMES = {
-    "Aurora Night": {
-        "bg_gradient": "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
-        "card_bg": "rgba(255, 255, 255, 0.05)",
-        "card_border": "rgba(94, 217, 217, 0.3)",
-        "text": "#e8f1f5",
-        "text_secondary": "#a0b8c7",
-        "accent": "#5ed9d9",
-        "accent_glow": "rgba(94, 217, 217, 0.4)",
-        "success": "#4ade80",
-        "danger": "#f87171",
-        "warning": "#fbbf24",
-        "font": "'Inter', 'Segoe UI', system-ui, sans-serif"
+    "Neo Noir": {
+        "bg": "#050814",
+        "accent": "#ff4c8b",
+        "accent_soft": "rgba(255, 76, 139, 0.18)",
+        "card_bg": "rgba(9, 12, 30, 0.95)",
+        "border": "rgba(255, 255, 255, 0.06)",
+        "text": "#f5f5ff",
+        "muted": "#9ca3af",
+        "font": "system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro', sans-serif",
     },
-    "Cyber Neon": {
-        "bg_gradient": "linear-gradient(135deg, #0a0e27 0%, #1a1a40 50%, #2d2d5f 100%)",
-        "card_bg": "rgba(138, 43, 226, 0.08)",
-        "card_border": "rgba(138, 43, 226, 0.5)",
-        "text": "#f0f0ff",
-        "text_secondary": "#b8b8d4",
-        "accent": "#9d4edd",
-        "accent_glow": "rgba(157, 78, 221, 0.6)",
-        "success": "#10b981",
-        "danger": "#ef4444",
-        "warning": "#f59e0b",
-        "font": "'Roboto Mono', 'Courier New', monospace"
+    "Daylight": {
+        "bg": "#f5f7fb",
+        "accent": "#2563eb",
+        "accent_soft": "rgba(37, 99, 235, 0.08)",
+        "card_bg": "rgba(255, 255, 255, 0.96)",
+        "border": "rgba(15, 23, 42, 0.06)",
+        "text": "#020617",
+        "muted": "#6b7280",
+        "font": "system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro', sans-serif",
     },
-    "Solar Flare": {
-        "bg_gradient": "linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 50%, #3d3d3d 100%)",
-        "card_bg": "rgba(251, 146, 60, 0.08)",
-        "card_border": "rgba(251, 146, 60, 0.4)",
-        "text": "#fef3c7",
-        "text_secondary": "#d4c5a0",
-        "accent": "#fb923c",
-        "accent_glow": "rgba(251, 146, 60, 0.5)",
-        "success": "#34d399",
-        "danger": "#f87171",
-        "warning": "#fbbf24",
-        "font": "'Inter', 'Segoe UI', system-ui, sans-serif"
+    "Retro Green": {
+        "bg": "#020712",
+        "accent": "#22c55e",
+        "accent_soft": "rgba(34, 197, 94, 0.12)",
+        "card_bg": "rgba(3, 10, 20, 0.96)",
+        "border": "rgba(34, 197, 94, 0.25)",
+        "text": "#e5ffe9",
+        "muted": "#86efac",
+        "font": "'JetBrains Mono', Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
     },
-    "Ocean Deep": {
-        "bg_gradient": "linear-gradient(135deg, #001f3f 0%, #003d5c 50%, #006494 100%)",
-        "card_bg": "rgba(255, 255, 255, 0.06)",
-        "card_border": "rgba(0, 191, 255, 0.3)",
-        "text": "#e0f2fe",
-        "text_secondary": "#b3d9ef",
-        "accent": "#00bfff",
-        "accent_glow": "rgba(0, 191, 255, 0.4)",
-        "success": "#10b981",
-        "danger": "#f43f5e",
-        "warning": "#f59e0b",
-        "font": "'Inter', 'Segoe UI', system-ui, sans-serif"
-    }
 }
 
-def inject_modern_css(theme_name):
+
+def inject_base_css(theme_name: str):
     theme = THEMES[theme_name]
-    
     css = f"""
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=Roboto+Mono:wght@400;700&display=swap');
-        
-        /* Global Styling */
         .stApp {{
-            background: {theme['bg_gradient']};
-            background-attachment: fixed;
+            background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.16), transparent 55%),
+                        radial-gradient(circle at bottom right, rgba(148, 163, 184, 0.12), transparent 55%),
+                        {theme['bg']};
+            color: {theme['text']};
             font-family: {theme['font']};
-            color: {theme['text']};
         }}
-        
-        /* Hide Streamlit branding */
-        #MainMenu {{visibility: hidden;}}
-        footer {{visibility: hidden;}}
-        header {{visibility: hidden;}}
-        
-        /* Glass Morphism Cards */
-        .glass-card {{
-            background: {theme['card_bg']};
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid {theme['card_border']};
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+
+        /* Remove default Streamlit padding to get edge-to-edge sections */
+        [data-testid="stSidebar"] > div:first-child {{
+            padding-top: 1.5rem;
         }}
-        
-        .glass-card::before {{
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, {theme['accent']}, transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
+
+        .ws-shell {{
+            padding: 0.8rem 0.8rem 2.5rem 0.8rem;
         }}
-        
-        .glass-card:hover {{
-            transform: translateY(-4px);
-            border-color: {theme['accent']};
-            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px {theme['accent_glow']};
+
+        .ws-topbar {{
+            border-radius: 18px;
+            padding: 1.2rem 1.6rem;
+            background: linear-gradient(120deg, {theme['card_bg']}, rgba(15,23,42,0.92));
+            border: 1px solid {theme['border']};
+            box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+            position: sticky;
+            top: 0.4rem;
+            z-index: 10;
+            backdrop-filter: blur(18px);
         }}
-        
-        .glass-card:hover::before {{
-            opacity: 1;
-        }}
-        
-        /* News Card */
-        .news-card {{
-            background: {theme['card_bg']};
-            backdrop-filter: blur(20px);
-            border: 1px solid {theme['card_border']};
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 16px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }}
-        
-        .news-card::after {{
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: {theme['accent']};
-            transform: translateX(-4px);
-            transition: transform 0.3s;
-        }}
-        
-        .news-card:hover {{
-            border-color: {theme['accent']};
-            transform: translateX(4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-        }}
-        
-        .news-card:hover::after {{
-            transform: translateX(0);
-        }}
-        
-        .news-source {{
-            font-size: 0.75rem;
-            color: {theme['text_secondary']};
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }}
-        
-        .news-title {{
-            font-size: 1.05rem;
+
+        .ws-title {{
+            font-size: 1.9rem;
             font-weight: 700;
-            margin-bottom: 12px;
-            line-height: 1.5;
-            color: {theme['text']};
+            letter-spacing: 0.03em;
         }}
-        
-        .news-title a {{
-            color: {theme['text']};
-            text-decoration: none;
-            transition: color 0.2s;
-        }}
-        
-        .news-title a:hover {{
-            color: {theme['accent']};
-        }}
-        
-        .news-summary {{
+
+        .ws-subtitle {{
             font-size: 0.9rem;
-            color: {theme['text_secondary']};
-            line-height: 1.6;
+            color: {theme['muted']};
         }}
-        
-        /* Metric Cards */
-        .metric-card {{
+
+        .ws-chip-row {{
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.55rem;
+        }}
+
+        .ws-chip {{
+            border-radius: 999px;
+            border: 1px solid {theme['border']};
+            padding: 0.15rem 0.8rem;
+            font-size: 0.78rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: rgba(15,23,42,0.75);
+        }}
+
+        .ws-chip-dot {{
+            width: 0.48rem;
+            height: 0.48rem;
+            border-radius: 999px;
+            background: {theme['accent']};
+            box-shadow: 0 0 8px {theme['accent']};
+        }}
+
+        .ws-metric-card {{
+            border-radius: 18px;
+            padding: 1rem 1.1rem;
             background: {theme['card_bg']};
-            backdrop-filter: blur(20px);
-            border: 1px solid {theme['card_border']};
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            transition: all 0.3s;
+            border: 1px solid {theme['border']};
+            box-shadow: 0 14px 40px rgba(0,0,0,0.35);
             position: relative;
+            overflow: hidden;
         }}
-        
-        .metric-card:hover {{
-            border-color: {theme['accent']};
-            box-shadow: 0 0 30px {theme['accent_glow']};
-        }}
-        
-        .metric-value {{
-            font-size: 3rem;
-            font-weight: 900;
-            color: {theme['accent']};
-            margin: 16px 0;
-            text-shadow: 0 0 20px {theme['accent_glow']};
-        }}
-        
-        .metric-label {{
-            font-size: 0.85rem;
-            color: {theme['text_secondary']};
+
+        .ws-metric-label {{
+            font-size: 0.78rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 600;
+            letter-spacing: 0.09em;
+            color: {theme['muted']};
+            margin-bottom: 0.25rem;
         }}
-        
-        /* Headers */
-        h1, h2, h3, h4 {{
-            color: {theme['text']} !important;
-            font-weight: 800 !important;
-        }}
-        
-        h1 {{
-            font-size: 3.5rem !important;
-            margin-bottom: 0 !important;
-            background: linear-gradient(135deg, {theme['text']}, {theme['accent']});
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }}
-        
-        .section-header {{
-            font-size: 1.3rem;
+
+        .ws-metric-value {{
+            font-size: 1.4rem;
             font-weight: 700;
-            color: {theme['accent']};
-            margin-bottom: 20px;
+        }}
+
+        .ws-metric-pill {{
+            font-size: 0.75rem;
+            padding: 0.15rem 0.6rem;
+            border-radius: 999px;
+            border: 1px solid {theme['border']};
+            background: {theme['accent_soft']};
+        }}
+
+        .ws-chaos-ring {{
+            width: 110px;
+            height: 110px;
+            border-radius: 999px;
+            border: 2px dashed {theme['accent']};
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            position: relative;
         }}
-        
-        .section-header::before {{
-            content: '';
-            width: 4px;
-            height: 24px;
-            background: {theme['accent']};
-            border-radius: 2px;
-        }}
-        
-        /* Status Badges */
-        .status-badge {{
-            display: inline-block;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
+
+        .ws-chaos-core {{
+            width: 78px;
+            height: 78px;
+            border-radius: 999px;
+            background: radial-gradient(circle at top, {theme['accent']}, transparent 60%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 0.3rem;
+            color: #020617;
             font-weight: 700;
-            background: {theme['card_bg']};
-            border: 1px solid {theme['card_border']};
-            color: {theme['accent']};
-            backdrop-filter: blur(10px);
         }}
-        
-        .badge-success {{ 
-            color: {theme['success']}; 
-            border-color: {theme['success']};
-            box-shadow: 0 0 15px rgba(74, 222, 128, 0.2);
-        }}
-        
-        .badge-danger {{ 
-            color: {theme['danger']}; 
-            border-color: {theme['danger']};
-            box-shadow: 0 0 15px rgba(248, 113, 113, 0.2);
-        }}
-        
-        .badge-warning {{ 
-            color: {theme['warning']}; 
-            border-color: {theme['warning']};
-            box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
-        }}
-        
-        /* Tabs */
-        .stTabs [data-baseweb="tab-list"] {{
-            gap: 8px;
-            background: {theme['card_bg']};
-            padding: 8px;
-            border-radius: 12px;
-            backdrop-filter: blur(20px);
-        }}
-        
-        .stTabs [data-baseweb="tab"] {{
-            background: transparent;
-            border-radius: 8px;
-            color: {theme['text_secondary']};
+
+        .ws-section-title {{
+            font-size: 1rem;
             font-weight: 600;
-            padding: 12px 24px;
-            border: 1px solid transparent;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: {theme['muted']};
+            margin-bottom: 0.4rem;
         }}
-        
-        .stTabs [aria-selected="true"] {{
-            background: {theme['accent']} !important;
-            color: #000 !important;
-            box-shadow: 0 0 20px {theme['accent_glow']};
-        }}
-        
-        /* Sidebar */
-        [data-testid="stSidebar"] {{
-            background: {theme['bg_gradient']};
-            border-right: 1px solid {theme['card_border']};
-        }}
-        
-        [data-testid="stSidebar"] .glass-card {{
+
+        .ws-card {{
+            border-radius: 18px;
+            padding: 0.9rem 1rem;
             background: {theme['card_bg']};
-            backdrop-filter: blur(10px);
+            border: 1px solid {theme['border']};
+            box-shadow: 0 12px 34px rgba(0,0,0,0.32);
         }}
-        
-        /* Animations */
-        @keyframes pulse {{
-            0%, 100% {{ opacity: 1; }}
-            50% {{ opacity: 0.6; }}
+
+        .ws-news-item {{
+            padding: 0.55rem 0.4rem 0.6rem 0.4rem;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            transition: background 0.15s ease, border 0.15s ease, transform 0.08s ease;
         }}
-        
-        .pulse {{
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        .ws-news-item:hover {{
+            background: {theme['accent_soft']};
+            border-color: {theme['accent']};
+            transform: translateY(-1px);
         }}
-        
-        /* Scrollbar */
-        ::-webkit-scrollbar {{
-            width: 10px;
-            height: 10px;
+
+        .ws-news-source {{
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            color: {theme['muted']};
         }}
-        
-        ::-webkit-scrollbar-track {{
-            background: rgba(0, 0, 0, 0.2);
+
+        .ws-news-title {{
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-top: 0.15rem;
+            margin-bottom: 0.15rem;
         }}
-        
-        ::-webkit-scrollbar-thumb {{
-            background: {theme['accent']};
-            border-radius: 5px;
+
+        .ws-news-meta {{
+            font-size: 0.75rem;
+            color: {theme['muted']};
         }}
-        
-        ::-webkit-scrollbar-thumb:hover {{
-            background: {theme['accent_glow']};
+
+        .ws-soft {{ color: {theme['muted']}; }}
+
+        .ws-badge-accent {{
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.2rem 0.55rem;
+            border-radius: 999px;
+            background: {theme['accent_soft']};
+            font-size: 0.7rem;
+        }}
+
+        .ws-footer {{
+            font-size: 0.78rem;
+            color: {theme['muted']};
+            text-align: center;
+            margin-top: 1.8rem;
+        }}
+
+        .ws-footer span {{ color: {theme['accent']}; }}
+
+        /* Clean up default buttons */
+        .stButton>button {{
+            border-radius: 999px;
+            border: 1px solid {theme['border']};
+            background: {theme['accent_soft']};
+            color: {theme['text']};
+            font-size: 0.8rem;
+            padding: 0.3rem 0.9rem;
         }}
     </style>
     """
     st.markdown(css, unsafe_allow_html=True)
 
+
 # -----------------------------------------------------------------------------
-# DATA FETCHING
+# DATA FETCHING (CACHED)
 # -----------------------------------------------------------------------------
 
 @st.cache_data(ttl=300)
@@ -378,37 +273,40 @@ def fetch_news(category="world"):
         "world": [
             "https://feeds.reuters.com/Reuters/worldNews",
             "https://feeds.bbci.co.uk/news/world/rss.xml",
-            "https://rss.apnews.com/AP-Top-News"
+            "https://rss.apnews.com/AP-Top-News",
         ],
         "tech": [
             "https://feeds.feedburner.com/TechCrunch/",
-            "https://www.theverge.com/rss/index.xml"
+            "https://www.theverge.com/rss/index.xml",
         ],
         "science": [
             "https://www.sciencedaily.com/rss/top/science.xml",
-            "https://rss.nytimes.com/services/xml/rss/nyt/Science.xml"
-        ]
+            "https://rss.nytimes.com/services/xml/rss/nyt/Science.xml",
+        ],
     }
-    
+
     articles = []
     selected_feeds = feeds.get(category, feeds["world"])
-    
+
     for url in selected_feeds:
         try:
             feed = feedparser.parse(url)
-            for entry in feed.entries[:3]:
-                articles.append({
-                    "title": entry.title,
-                    "link": entry.link,
-                    "published": entry.get("published", "Just now"),
-                    "source": feed.feed.get("title", "Unknown Source"),
-                    "summary": entry.get("summary", "")[:150] + "..."
-                })
-        except:
+            for entry in feed.entries[:4]:
+                articles.append(
+                    {
+                        "title": entry.title,
+                        "link": entry.link,
+                        "published": entry.get("published", "Just now"),
+                        "source": feed.feed.get("title", "Unknown Source"),
+                        "summary": entry.get("summary", "")[:180] + "...",
+                    }
+                )
+        except Exception:
             continue
-            
+
     random.shuffle(articles)
-    return articles[:10]
+    return articles[:15]
+
 
 @st.cache_data(ttl=900)
 def fetch_weather(lat, lon, city_name):
@@ -417,254 +315,370 @@ def fetch_weather(lat, lon, city_name):
         response = requests.get(url)
         data = response.json()
         current = data.get("current_weather", {})
-        
+
         wcode = current.get("weathercode", 0)
         icon = "☀️"
-        if wcode > 2: icon = "⛅"
-        if wcode > 45: icon = "🌫️"
-        if wcode > 50: icon = "🌧️"
-        if wcode > 70: icon = "❄️"
-        if wcode > 95: icon = "⛈️"
-        
+        label = "Clear"
+        if wcode > 2:
+            icon, label = "⛅", "Cloudy"
+        if wcode > 45:
+            icon, label = "🌫️", "Foggy"
+        if wcode > 50:
+            icon, label = "🌧️", "Rain"
+        if wcode > 70:
+            icon, label = "❄️", "Snow"
+        if wcode > 95:
+            icon, label = "⛈️", "Storm"
+
         return {
             "temp": current.get("temperature"),
             "speed": current.get("windspeed"),
             "icon": icon,
-            "city": city_name
+            "label": label,
+            "city": city_name,
         }
-    except:
-        return {"temp": "--", "speed": "--", "icon": "❓", "city": city_name}
+    except Exception:
+        return {"temp": "--", "speed": "--", "icon": "❓", "label": "Unknown", "city": city_name}
+
 
 def generate_market_data():
     tickers = ["S&P 500", "NASDAQ", "BTC-USD", "GOLD"]
     data = {}
-    
+
     for ticker in tickers:
         base_price = random.uniform(1000, 50000)
         volatility = base_price * 0.02
         prices = [base_price]
-        for _ in range(20):
+        for _ in range(32):
             change = random.uniform(-volatility, volatility)
             prices.append(prices[-1] + change)
-        
+
         change_pct = ((prices[-1] - prices[0]) / prices[0]) * 100
         data[ticker] = {
             "history": prices,
             "current": prices[-1],
-            "change": change_pct
+            "change": change_pct,
         }
     return data
 
+
 # -----------------------------------------------------------------------------
-# MODERN COMPONENTS
+# RENDER HELPERS
 # -----------------------------------------------------------------------------
 
-def render_news_card(article, theme):
-    st.markdown(f"""
-    <div class="news-card">
-        <div class="news-source">
-            <span>📡</span>
-            <span>{article['source']}</span>
-            <span style="margin-left: auto; opacity: 0.6;">•</span>
-            <span style="opacity: 0.6;">{article['published'][:16]}</span>
-        </div>
-        <div class="news-title">
-            <a href="{article['link']}" target="_blank">{article['title']}</a>
-        </div>
-        <div class="news-summary">
-            {article['summary']}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+def render_news_stream(articles):
+    for article in articles:
+        st.markdown(
+            f"""
+            <div class="ws-news-item">
+                <div class="ws-news-source">{article['source']} · {article['published'][:16]}</div>
+                <div class="ws-news-title">
+                    <a href="{article['link']}" target="_blank">{article['title']}</a>
+                </div>
+                <div class="ws-news-meta">{article['summary']}</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-def render_weather_card(weather, theme):
-    st.markdown(f"""
-    <div class="glass-card" style="text-align: center;">
-        <div class="metric-label">CURRENT CONDITIONS</div>
-        <div style="font-size: 5rem; margin: 20px 0;">{weather['icon']}</div>
-        <div class="metric-value">{weather['temp']}°</div>
-        <h3 style="margin: 12px 0; font-size: 1.5rem;">{weather['city']}</h3>
-        <div style="color: {theme['text_secondary']}; margin-top: 16px; display: flex; justify-content: center; gap: 20px;">
-            <div>💨 {weather['speed']} km/h</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
 
-def render_market_card(name, data, theme):
-    color = theme['success'] if data['change'] >= 0 else theme['danger']
-    arrow = "↗" if data['change'] >= 0 else "↘"
-    
-    fig = go.Figure(data=go.Scatter(
-        y=data['history'],
-        mode='lines',
-        line=dict(color=color, width=3),
-        fill='tozeroy',
-        fillcolor=f"{color}20"
-    ))
-    
+def render_weather_block(weather):
+    st.markdown(
+        f"""
+        <div class="ws-metric-card">
+            <div class="ws-metric-label">Local Atmosphere</div>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:0.9rem;">
+                <div>
+                    <div style="font-size:0.9rem;" class="ws-soft">{weather['city']}</div>
+                    <div class="ws-metric-value">{weather['temp']}°C {weather['icon']}</div>
+                    <div class="ws-soft" style="margin-top:0.2rem; font-size:0.8rem;">
+                        {weather['label']} · Wind {weather['speed']} km/h
+                    </div>
+                </div>
+                <div class="ws-metric-pill">Weather feed: live pull</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_market_widget(name, data):
+    color = "#22c55e" if data["change"] >= 0 else "#ef4444"
+    fill_alpha = "0.16" if data["change"] >= 0 else "0.12"
+
+    rgba_fill = (
+        f"rgba(34, 197, 94, {fill_alpha})" if data["change"] >= 0 else f"rgba(248, 113, 113, {fill_alpha})"
+    )
+
+    fig = go.Figure(
+        data=go.Scatter(
+            y=data["history"],
+            mode="lines",
+            line=dict(width=2),
+            fill="tozeroy",
+            fillcolor=rgba_fill,
+        )
+    )
+
     fig.update_layout(
         margin=dict(l=0, r=0, t=0, b=0),
-        height=60,
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
+        height=70,
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         xaxis=dict(visible=False),
         yaxis=dict(visible=False),
-        hovermode=False
     )
-    
-    st.markdown(f"""
-    <div class="glass-card" style="padding: 20px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <span style="font-weight: 700; font-size: 0.95rem; color: {theme['text_secondary']};">{name}</span>
-            <span class="status-badge" style="color: {color}; border-color: {color};">
-                {arrow} {abs(data['change']):.2f}%
-            </span>
-        </div>
-        <div style="font-size: 1.8rem; font-weight: 900; color: {theme['text']}; margin-bottom: 12px;">
-            ${data['current']:,.2f}
-        </div>
-    """, unsafe_allow_html=True)
-    st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+
+    st.markdown(
+        f"""
+        <div class="ws-card" style="padding:0.7rem 0.8rem 0.3rem 0.8rem; margin-bottom:0.45rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-size:0.85rem; font-weight:600;">{name}</div>
+                <div style="font-size:0.85rem; font-weight:600; color:{color};">
+                    {data['change']:.2f}%
+                </div>
+            </div>
+            <div style="font-size:0.78rem; margin-top:0.15rem;" class="ws-soft">
+                Spot ~ {data['current']:.2f}
+            </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
     st.markdown("</div>", unsafe_allow_html=True)
+
 
 # -----------------------------------------------------------------------------
 # MAIN APP
 # -----------------------------------------------------------------------------
 
 def main():
-    # Sidebar
+    # SIDEBAR: CONTROL PANEL
     with st.sidebar:
-        st.markdown('<div class="section-header">⚙️ CONTROL PANEL</div>', unsafe_allow_html=True)
-        
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        selected_theme = st.selectbox("🎨 Theme", list(THEMES.keys()), index=0)
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("**📍 Location Settings**")
-        location_option = st.selectbox("Region", ["North America", "Europe", "Asia", "Custom"])
-        
-        custom_lat = 40.71
-        custom_lon = -74.00
-        city_name = "New York"
-        
+        st.markdown("### 🧭 Control Panel")
+
+        theme_choice = st.radio("Visual theme", list(THEMES.keys()), index=0)
+
+        st.markdown("---")
+        st.markdown("#### 📍 Focus Region")
+        location_option = st.selectbox("Preset regions", ["North America", "Europe", "Asia", "Custom"])
+
+        lat, lon, city_name = 40.71, -74.00, "New York"
         if location_option == "Europe":
-            custom_lat, custom_lon, city_name = 51.50, -0.12, "London"
+            lat, lon, city_name = 51.50, -0.12, "London"
         elif location_option == "Asia":
-            custom_lat, custom_lon, city_name = 35.67, 139.65, "Tokyo"
+            lat, lon, city_name = 35.67, 139.65, "Tokyo"
         elif location_option == "Custom":
-            city_name = st.text_input("City Name", "Metropolis")
-            custom_lat = st.number_input("Latitude", value=40.71)
-            custom_lon = st.number_input("Longitude", value=-74.00)
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("**ℹ️ System Status**")
-        st.markdown('<span class="status-badge badge-success">● ONLINE</span>', unsafe_allow_html=True)
-        st.markdown(f"<div style='margin-top: 12px; font-size: 0.8rem; opacity: 0.6;'>Last Update: {datetime.now().strftime('%H:%M:%S')}</div>", unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+            city_name = st.text_input("City name", "Metropolis")
+            lat = st.number_input("Latitude", value=40.71)
+            lon = st.number_input("Longitude", value=-74.00)
+
+        st.markdown("---")
+        st.markdown("#### 📰 News Streams")
+        enabled_streams = st.multiselect(
+            "Activate feeds", ["World", "Tech", "Science"], default=["World", "Tech"]
+        )
+
+        st.markdown("---")
+        st.caption("Data refreshes on interaction. This is a read-only dashboard — no panic buttons.")
 
     # Apply theme
-    inject_modern_css(selected_theme)
-    theme = THEMES[selected_theme]
+    inject_base_css(theme_choice)
+    theme = THEMES[theme_choice]
 
-    # Hero Section
-    st.markdown(f"""
-    <div style="margin-bottom: 40px;">
-        <h1>🌐 PULSE</h1>
-        <p style="font-size: 1.2rem; color: {theme['text_secondary']}; margin-top: 8px;">
-            Real-time global intelligence dashboard
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Chaos Meter
-    chaos_options = [
-        ("Tranquil", "✨", theme['success']),
-        ("Active", "🌶️", theme['warning']),
-        ("Volatile", "🌪️", theme['warning']),
-        ("Critical", "💀", theme['danger'])
-    ]
-    chaos_label, chaos_icon, chaos_color = random.choice(chaos_options)
-    
-    st.markdown(f"""
-    <div class="glass-card" style="text-align: center; padding: 30px; margin-bottom: 30px;">
-        <div class="metric-label">GLOBAL SITUATION INDEX</div>
-        <div style="font-size: 4rem; margin: 20px 0;">{chaos_icon}</div>
-        <div style="font-size: 2.5rem; font-weight: 900; color: {chaos_color}; text-shadow: 0 0 30px {chaos_color}50;">
-            {chaos_label.upper()}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    # Top shell layout
+    st.markdown('<div class="ws-shell">', unsafe_allow_html=True)
 
-    # Main Content Grid
-    col1, col2 = st.columns([2, 1])
-
-    # Left Column: News Feed
-    with col1:
-        st.markdown('<div class="section-header">📰 LIVE FEED</div>', unsafe_allow_html=True)
-        
-        tab1, tab2, tab3 = st.tabs(["🌍 World", "💻 Tech", "🧬 Science"])
-        
-        with tab1:
-            news = fetch_news("world")
-            for article in news:
-                render_news_card(article, theme)
-        
-        with tab2:
-            news = fetch_news("tech")
-            for article in news:
-                render_news_card(article, theme)
-        
-        with tab3:
-            news = fetch_news("science")
-            for article in news:
-                render_news_card(article, theme)
-
-    # Right Column: Metrics
-    with col2:
-        st.markdown('<div class="section-header">🌡️ LOCAL CONDITIONS</div>', unsafe_allow_html=True)
-        weather = fetch_weather(custom_lat, custom_lon, city_name)
-        render_weather_card(weather, theme)
-        
-        st.markdown('<div class="section-header" style="margin-top: 30px;">📈 MARKET PULSE</div>', unsafe_allow_html=True)
-        market_data = generate_market_data()
-        for ticker, data in market_data.items():
-            render_market_card(ticker, data, theme)
-        
-        # System Info
-        st.markdown(f"""
-        <div class="glass-card" style="margin-top: 20px;">
-            <div class="metric-label" style="margin-bottom: 16px;">DIAGNOSTICS</div>
-            <div style="display: flex; flex-direction: column; gap: 12px; font-size: 0.9rem;">
-                <div style="display: flex; justify-content: space-between;">
-                    <span style="color: {theme['text_secondary']};">AI Status</span>
-                    <span class="status-badge badge-warning">Aware</span>
-                </div>
-                <div style="display: flex; justify-content: space-between;">
-                    <span style="color: {theme['text_secondary']};">Data Streams</span>
-                    <span class="status-badge badge-success">Active</span>
-                </div>
-                <div style="display: flex; justify-content: space-between;">
-                    <span style="color: {theme['text_secondary']};">Threats</span>
-                    <span class="status-badge">None Detected</span>
+    # TOPBAR / HEADER
+    col_l, col_r = st.columns([3, 1])
+    with col_l:
+        st.markdown(
+            f"""
+            <div class="ws-topbar">
+                <div style="display:flex; justify-content:space-between; gap:1.5rem; align-items:flex-start;">
+                    <div>
+                        <div class="ws-title">World Situation · Command Center</div>
+                        <div class="ws-subtitle">High-level signal from world news, markets, and your local weather feed.</div>
+                        <div class="ws-chip-row">
+                            <div class="ws-chip">
+                                <div class="ws-chip-dot"></div>
+                                Live snapshot · {datetime.now().strftime('%H:%M:%S')}
+                            </div>
+                            <div class="ws-chip">Viewport: {city_name}</div>
+                            <div class="ws-chip">Theme: {theme_choice}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid {theme['card_border']}; font-size: 0.75rem; color: {theme['text_secondary']};">
-                📍 {custom_lat}, {custom_lon}<br>
-                🕐 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+            """,
+            unsafe_allow_html=True,
+        )
 
-    # Footer
-    st.markdown("---")
-    st.markdown(f"""
-    <div style="text-align: center; color: {theme['text_secondary']}; font-size: 0.85rem; padding: 20px 0;">
-        <div style="margin-bottom: 8px;">⚡ Powered by Streamlit • Real-time data aggregation</div>
-        <div style="opacity: 0.6;">Dashboard v2.0 • Updated {datetime.now().strftime('%H:%M:%S')}</div>
-    </div>
-    """, unsafe_allow_html=True)
+    with col_r:
+        chaos_level = random.choice(["Tranquil ✨", "Manageable ⚖️", "Spicy 🌶️", "Weird 🌪️", "Doomy-ish 💀"])
+        st.markdown(
+            f"""
+            <div style="display:flex; justify-content:flex-end; margin-top:0.4rem;">
+                <div class="ws-metric-card" style="max-width:230px;">
+                    <div class="ws-metric-label">Global Vibes</div>
+                    <div style="display:flex; justify-content:space-between; gap:0.8rem; align-items:center;">
+                        <div>
+                            <div class="ws-metric-value" style="font-size:1rem;">{chaos_level}</div>
+                            <div class="ws-soft" style="font-size:0.8rem; margin-top:0.2rem;">
+                                Not financial, political, or existential advice.
+                            </div>
+                        </div>
+                        <div class="ws-chaos-ring">
+                            <div class="ws-chaos-core">{chaos_level.split()[0]}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    st.markdown("\n")
+
+    # MAIN BODY TABS
+    overview_tab, news_tab, diagnostics_tab = st.tabs(["Overview", "News Stream", "Diagnostics"])
+
+    # OVERVIEW TAB
+    with overview_tab:
+        # Top row: weather + key metrics + markets rollup
+        c1, c2, c3 = st.columns([1.2, 1, 1])
+
+        with c1:
+            st.markdown('<div class="ws-section-title">Local Situation</div>', unsafe_allow_html=True)
+            weather = fetch_weather(lat, lon, city_name)
+            render_weather_block(weather)
+
+        with c2:
+            st.markdown('<div class="ws-section-title">Human Concerns</div>', unsafe_allow_html=True)
+            st.markdown(
+                f"""
+                <div class="ws-metric-card">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <div>
+                            <div class="ws-metric-label">Coffee Supply</div>
+                            <div class="ws-metric-value">Stable ☕</div>
+                            <div class="ws-soft" style="font-size:0.8rem;">Critical systems remain online.</div>
+                        </div>
+                        <div class="ws-metric-pill">Priority: high</div>
+                    </div>
+                    <div style="margin-top:0.7rem; font-size:0.8rem;" class="ws-soft">
+                        AI sentience: <span style="color:{theme['accent']}; font-weight:600;">debatable</span><br/>
+                        Alien presence: not currently confirmed.
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        with c3:
+            st.markdown('<div class="ws-section-title">Markets Pulse</div>', unsafe_allow_html=True)
+            market_data = generate_market_data()
+            # show two compact summaries
+            for ticker in list(market_data.keys())[:2]:
+                d = market_data[ticker]
+                direction = "▲" if d["change"] >= 0 else "▼"
+                color = "#22c55e" if d["change"] >= 0 else "#ef4444"
+                st.markdown(
+                    f"""
+                    <div class="ws-card" style="margin-bottom:0.45rem;">
+                        <div style="display:flex; justify-content:space-between; font-size:0.85rem;">
+                            <div style="font-weight:600;">{ticker}</div>
+                            <div style="color:{color}; font-weight:600;">{direction} {d['change']:.2f}%</div>
+                        </div>
+                        <div class="ws-soft" style="font-size:0.78rem; margin-top:0.2rem;">
+                            Spot ~ {d['current']:.2f}
+                        </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+
+        st.markdown("\n")
+
+        # Second row: news + detailed mini markets
+        nc, mc = st.columns([2.2, 1])
+        with nc:
+            st.markdown('<div class="ws-section-title">Signal · Condensed Headlines</div>', unsafe_allow_html=True)
+
+            world_news = fetch_news("world") if "World" in enabled_streams else []
+            tech_news = fetch_news("tech") if "Tech" in enabled_streams else []
+            sci_news = fetch_news("science") if "Science" in enabled_streams else []
+
+            combined = world_news[:5] + tech_news[:4] + sci_news[:3]
+            render_news_stream(combined)
+
+        with mc:
+            st.markdown('<div class="ws-section-title">Market Micrographs</div>', unsafe_allow_html=True)
+            for ticker, d in market_data.items():
+                render_market_widget(ticker, d)
+
+    # NEWS TAB
+    with news_tab:
+        st.markdown('<div class="ws-section-title">Full Streams</div>', unsafe_allow_html=True)
+        t1, t2, t3 = st.columns(3)
+
+        with t1:
+            st.markdown("##### 🌍 World", unsafe_allow_html=True)
+            render_news_stream(fetch_news("world"))
+
+        with t2:
+            st.markdown("##### 💻 Tech", unsafe_allow_html=True)
+            render_news_stream(fetch_news("tech"))
+
+        with t3:
+            st.markdown("##### 🧬 Science", unsafe_allow_html=True)
+            render_news_stream(fetch_news("science"))
+
+    # DIAGNOSTICS TAB
+    with diagnostics_tab:
+        st.markdown('<div class="ws-section-title">Telemetry & Debug</div>', unsafe_allow_html=True)
+        st.markdown(
+            f"""
+            <div class="ws-card">
+                <div style="display:flex; flex-wrap:wrap; gap:1.1rem; font-size:0.88rem;">
+                    <div>
+                        <div class="ws-soft">Lat / Lon</div>
+                        <div style="font-weight:600;">{lat:.3f} · {lon:.3f}</div>
+                    </div>
+                    <div>
+                        <div class="ws-soft">Viewport city</div>
+                        <div style="font-weight:600;">{city_name}</div>
+                    </div>
+                    <div>
+                        <div class="ws-soft">Active feeds</div>
+                        <div style="font-weight:600;">{', '.join(enabled_streams) or 'None'}</div>
+                    </div>
+                    <div>
+                        <div class="ws-soft">Render timestamp</div>
+                        <div style="font-weight:600;">{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</div>
+                    </div>
+                </div>
+                <div style="margin-top:1rem; font-size:0.8rem;" class="ws-soft">
+                    This panel exists purely for the engineers and the curious.
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+    # FOOTER
+    st.markdown(
+        f"""
+        <div class="ws-footer">
+            Snapshot generated at <span>{datetime.now().strftime('%H:%M:%S')}</span> ·
+            built with Streamlit, public APIs, and a healthy respect for uncertainty.
+        </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
 
 if __name__ == "__main__":
     main()
