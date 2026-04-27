@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://varun-sv.github.io/world-situation/sitemap.xml
