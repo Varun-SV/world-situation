@@ -1,54 +1,69 @@
-# 🌍 Tariff Ticker — A Funny Reactive Webpage on US Tariffs
+# 🌍 World Situation — Real-Time Global News Dashboard
 
-Welcome to **Tariff Ticker**, a satirical, self-updating webpage that pokes fun at the chaos of global trade and tariffs.  
-This project pulls in live news via RSS feeds, animates them dynamically, and wraps it all in a fluid, reactive design.  
+**World Situation** is a free, live global news aggregator and dashboard that collects real-time world news from Reuters, BBC, AP News, Al Jazeera, and NPR — all in one beautifully designed, single-page web application.
 
-🚀 **Hosted on GitHub Pages:**  
-👉 [View Live Demo](https://varun-sv.github.io/world-situation/)
+🚀 **Live site:** [varun-sv.github.io/world-situation](https://varun-sv.github.io/world-situation/)
 
 ---
 
 ## ✨ Features
-- 🔄 **Auto-updating News Feed** — stays fresh with the latest US tariff news using live RSS feeds.  
-- 🎭 **Humor Baked In** — makes the dry world of tariffs a little less… taxing.  
-- ⚡ **All-in-One File** — full HTML, CSS, and JavaScript packed into a single file.  
-- 🎨 **Fluid Animations** — smooth, dynamic motion for a fun, reactive experience.  
-- 🌐 **GitHub Pages Ready** — no backend needed, deploys instantly.  
+
+- 🔄 **Real-Time Global News Feed** — live headlines aggregated from Reuters, BBC, AP, Al Jazeera, and NPR via RSS
+- 📍 **Location-Aware Local News** — local headlines based on your geolocation (India: Times of India, The Hindu; US: NYT, WSJ)
+- ⛅ **Live Local Weather** — real-time temperature and conditions via Open-Meteo
+- 📈 **Global Market Data** — Dow Jones, Nikkei 225, FTSE 100 tickers
+- 🌡️ **Chaos Level Indicator** — a satirical real-time gauge of global weirdness
+- 🎨 **5 Visual Themes** — Serene Dawn, Midnight Matrix, Retro Terminal, Sahara Sunset, Synthwave Grid
+- ⚡ **Single-File App** — all HTML, CSS, and JavaScript in one file; no backend, no build step
+- 🌐 **No Login Required** — completely free and open source
+
+---
+
+## 🛠️ Tech Stack
+
+- **HTML5 + Vanilla JavaScript** — zero dependencies
+- **Tailwind CSS** (CDN) — responsive utility-first styling
+- **Google Fonts** — Inter & Roboto Mono
+- **RSS via allorigins.win** — CORS-safe feed proxy
+- **Open-Meteo API** — free weather data
+- **OpenStreetMap Nominatim** — reverse geocoding for local news
 
 ---
 
 ## 📂 Project Structure
-Since this project is entirely **self-contained** in one file:
-- `index.html` → includes HTML + CSS + JS in a single page.
+
+```
+world-situation/
+├── index.html        ← main web application (HTML + CSS + JS)
+├── streamlit-app.py  ← alternative Streamlit dashboard (NEXUS)
+├── manifest.json     ← PWA web app manifest
+├── robots.txt        ← search engine crawl directives
+├── sitemap.xml       ← sitemap for Google Search Console
+├── og-image.svg      ← social preview card image
+└── requirements.txt  ← Python dependencies for Streamlit app
+```
 
 ---
 
-## 🔧 How It Works
-1. The page fetches live RSS feeds with JavaScript.  
-2. It parses and displays them dynamically with animation.  
-3. Every refresh, the ticker updates itself with the latest chaos from the world of tariffs.  
+## 🚀 Deployment
 
----
+The site is hosted on **GitHub Pages** and deploys automatically on every push to `main`.
 
-## 🛠️ Deployment
-This site is already deployed with **GitHub Pages**.  
-If you’d like to deploy your own:
-1. Fork or clone this repo.  
-2. Push it to a GitHub repo.  
-3. In repo settings, enable **GitHub Pages** with branch `main` and folder `/root`.  
-4. Your satire is now live.  
+To run your own copy:
+1. Fork this repository
+2. Enable GitHub Pages in repo settings (branch: `main`, folder: `/root`)
+3. Your live global news dashboard is online instantly
 
 ---
 
 ## 🤝 Credits
-This project was **fully created using AI collaboration**:  
-- [Claude](https://claude.ai)  
-- [ChatGPT](https://chat.openai.com)  
 
-You’re looking at the combined brainpower of two large language models weaving humor and code together.
+Built with **AI collaboration**:
+- [Claude](https://claude.ai)
+- [ChatGPT](https://chat.openai.com)
 
 ---
 
 ## 📜 License
-This project is released under the MIT License.  
-Feel free to fork, remix, and spin it into your own satirical creations.
+
+MIT License — free to fork, remix, and build on.

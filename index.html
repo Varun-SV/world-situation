@@ -3,9 +3,92 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>world-situation</title>
+<title>World Situation — Real-Time Global News Dashboard</title>
+<meta name="description" content="Real-time global news dashboard aggregating live RSS feeds from Reuters, BBC, AP &amp; more. World news, markets, and local weather — all in one place." />
+<meta name="author" content="Varun SV" />
+<meta name="robots" content="index, follow" />
+<meta name="theme-color" content="#7CFC00" />
+<link rel="canonical" href="https://varun-sv.github.io/world-situation/" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://varun-sv.github.io/world-situation/" />
+<meta property="og:title" content="World Situation — Real-Time Global News Dashboard" />
+<meta property="og:description" content="Real-time global news dashboard aggregating live RSS feeds from Reuters, BBC, AP &amp; more. World news, markets, and local weather — all in one place." />
+<meta property="og:image" content="https://varun-sv.github.io/world-situation/og-image.svg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="World Situation dashboard showing global news feeds, markets, and weather" />
+<meta property="og:site_name" content="World Situation" />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="World Situation — Real-Time Global News Dashboard" />
+<meta name="twitter:description" content="Real-time global news dashboard aggregating live RSS feeds from Reuters, BBC, AP &amp; more." />
+<meta name="twitter:image" content="https://varun-sv.github.io/world-situation/og-image.svg" />
+<meta name="twitter:image:alt" content="World Situation global news dashboard" />
+
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>" />
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="/world-situation/manifest.json" />
+
+<!-- Performance: preconnect critical origins -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://cdn.tailwindcss.com" />
+<link rel="dns-prefetch" href="https://api.allorigins.win" />
+<link rel="dns-prefetch" href="https://nominatim.openstreetmap.org" />
+<link rel="dns-prefetch" href="https://api.open-meteo.com" />
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
 <script src="https://cdn.tailwindcss.com"></script>
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "World Situation",
+      "url": "https://varun-sv.github.io/world-situation/",
+      "description": "Real-time global news dashboard"
+    },
+    {
+      "@type": "WebApplication",
+      "name": "World Situation",
+      "url": "https://varun-sv.github.io/world-situation/",
+      "description": "A live global news dashboard tracking world events, markets, weather, and geopolitical developments in real time. Aggregates RSS feeds from Reuters, BBC, AP, Al Jazeera, and NPR.",
+      "applicationCategory": "NewsApplication",
+      "operatingSystem": "Any",
+      "inLanguage": "en",
+      "isAccessibleForFree": true,
+      "author": { "@type": "Person", "name": "Varun SV", "url": "https://github.com/Varun-SV" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "featureList": [
+        "Real-time global news from Reuters, BBC, AP, Al Jazeera, NPR",
+        "Location-based local news",
+        "Live local weather via Open-Meteo",
+        "Global market data",
+        "Multiple visual themes",
+        "Chaos level indicator"
+      ]
+    }
+  ]
+}
+</script>
+
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CEK46WECHK"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-CEK46WECHK');
+</script>
 <style>
   body {
     font-family: 'Inter', sans-serif;
@@ -201,6 +284,31 @@
 </style>
 </head>
 <body class="min-h-screen overflow-x-hidden">
+<noscript>
+  <div style="padding:2rem;max-width:800px;margin:0 auto;font-family:sans-serif;line-height:1.6;">
+    <h1>World Situation — Real-Time Global News Dashboard</h1>
+    <p>World Situation is a free live global news aggregator and dashboard that collects real-time world news from Reuters, BBC, AP News, Al Jazeera, and NPR. It features a world news feed, location-based local news, live local weather, global market data, and a satirical chaos level indicator — all in a single responsive web application.</p>
+    <p>This page requires JavaScript to display the live news feeds. Please enable JavaScript to use the full dashboard.</p>
+    <h2>Data Sources</h2>
+    <ul>
+      <li>Reuters World News RSS</li>
+      <li>BBC World News RSS</li>
+      <li>AP Top News RSS</li>
+      <li>Al Jazeera RSS</li>
+      <li>NPR News RSS</li>
+    </ul>
+    <h2>Features</h2>
+    <ul>
+      <li>Real-time global news feed</li>
+      <li>Location-based local news</li>
+      <li>Live local weather data via Open-Meteo</li>
+      <li>Global market data (Dow Jones, Nikkei 225, FTSE 100)</li>
+      <li>Satirical world chaos level indicator</li>
+      <li>Five visual themes</li>
+      <li>No login or account required — completely free</li>
+    </ul>
+  </div>
+</noscript>
 <div class="container mx-auto p-4 md:p-6">
   <!-- Header -->
   <header class="text-center mb-6">
@@ -218,9 +326,9 @@
     </div>
   </header>
   <!-- Main Dashboard Grid -->
-  <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <main aria-label="World news dashboard" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     <!-- News Feed Widget (Larger) -->
-    <section class="widget rounded-2xl p-4 md:p-6 lg:col-span-2">
+    <section aria-label="World news feed" class="widget rounded-2xl p-4 md:p-6 lg:col-span-2">
       <h2 class="text-xl font-bold mb-4 flex items-center">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
         World News Feed
@@ -240,7 +348,7 @@
       </div>
     </section>
     <!-- Local News Widget -->
-    <section class="widget rounded-2xl p-4 md:p-6">
+    <section aria-label="Local news" class="widget rounded-2xl p-4 md:p-6">
       <h2 class="text-xl font-bold mb-4 flex items-center">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z" /><circle cx="12" cy="10" r="3" /></svg>
         Local News
@@ -250,7 +358,7 @@
       </div>
     </section>
     <!-- Local Weather Widget -->
-    <section class="widget rounded-2xl p-4 md:p-6">
+    <section aria-label="Local weather" class="widget rounded-2xl p-4 md:p-6">
       <h2 class="text-xl font-bold mb-4 flex items-center">
          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
         Local Weather
@@ -293,7 +401,19 @@
       <h2 class="text-xl font-bold mb-4">Settings & About</h2>
       <div class="grid md:grid-cols-2 gap-6">
         <div>
-          <p class="text-sm mb-4" style="color: var(--muted-text);">This dashboard provides a real-time, slightly satirical glimpse into the state of the world. Data is aggregated from public RSS feeds.</p>
+          <p class="text-sm mb-3" style="color: var(--muted-text);">
+            <strong>World Situation</strong> is a free, real-time global news dashboard that aggregates live headlines from the world's leading sources — Reuters, BBC World News, AP News, Al Jazeera, and NPR — into a single fast interface.
+          </p>
+          <p class="text-sm mb-3" style="color: var(--muted-text);">
+            Alongside the live news aggregator, the dashboard surfaces location-aware local news, real-time local weather via Open-Meteo, and global market data (Dow Jones, Nikkei 225, FTSE 100). No account needed — completely free and open source.
+          </p>
+          <ul class="text-xs mb-4 space-y-1" style="color: var(--muted-text);">
+            <li>✔ Live world news feed (Reuters · BBC · AP · Al Jazeera · NPR)</li>
+            <li>✔ Location-based local news</li>
+            <li>✔ Real-time local weather</li>
+            <li>✔ Global market ticker</li>
+            <li>✔ Five visual themes</li>
+          </ul>
           <div class="text-xs" style="color: var(--muted-text);">
             Last updated: <span id="lastUpdate">Never</span>
           </div>

@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f2027"/>
+      <stop offset="50%" style="stop-color:#203a43"/>
+      <stop offset="100%" style="stop-color:#2c5364"/>
+    </linearGradient>
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:rgba(10,25,40,0.9)"/>
+      <stop offset="100%" style="stop-color:rgba(10,25,40,0.6)"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Subtle grid overlay -->
+  <g opacity="0.06" stroke="#7CFC00" stroke-width="1">
+    <line x1="0" y1="105" x2="1200" y2="105"/>
+    <line x1="0" y1="210" x2="1200" y2="210"/>
+    <line x1="0" y1="315" x2="1200" y2="315"/>
+    <line x1="0" y1="420" x2="1200" y2="420"/>
+    <line x1="0" y1="525" x2="1200" y2="525"/>
+    <line x1="150" y1="0" x2="150" y2="630"/>
+    <line x1="300" y1="0" x2="300" y2="630"/>
+    <line x1="450" y1="0" x2="450" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="750" y1="0" x2="750" y2="630"/>
+    <line x1="900" y1="0" x2="900" y2="630"/>
+    <line x1="1050" y1="0" x2="1050" y2="630"/>
+  </g>
+
+  <!-- Top accent bar -->
+  <rect x="0" y="0" width="1200" height="5" fill="#7CFC00" opacity="0.8"/>
+
+  <!-- Globe emoji -->
+  <text x="600" y="220" text-anchor="middle" font-size="120" font-family="serif">🌍</text>
+
+  <!-- Main title -->
+  <text x="600" y="310" text-anchor="middle"
+        font-family="'Inter', 'Helvetica Neue', Arial, sans-serif"
+        font-size="72" font-weight="900"
+        fill="#7CFC00" filter="url(#glow)">World Situation</text>
+
+  <!-- Subtitle -->
+  <text x="600" y="370" text-anchor="middle"
+        font-family="'Inter', 'Helvetica Neue', Arial, sans-serif"
+        font-size="28" font-weight="400"
+        fill="#e8f6f5" opacity="0.9">Real-Time Global News Dashboard</text>
+
+  <!-- Divider -->
+  <line x1="400" y1="400" x2="800" y2="400" stroke="#7CFC00" stroke-width="1.5" opacity="0.4"/>
+
+  <!-- Data sources -->
+  <text x="600" y="435" text-anchor="middle"
+        font-family="'Inter', 'Helvetica Neue', Arial, sans-serif"
+        font-size="18" font-weight="400"
+        fill="#a0bdba">Reuters · BBC · AP News · Al Jazeera · NPR</text>
+
+  <!-- Tags row -->
+  <g font-family="'Inter', 'Helvetica Neue', Arial, sans-serif" font-size="14" fill="#0b1924" font-weight="700">
+    <!-- Tag: Live News -->
+    <rect x="275" y="465" width="110" height="30" rx="15" fill="#7CFC00" opacity="0.9"/>
+    <text x="330" y="485" text-anchor="middle">Live News</text>
+    <!-- Tag: Markets -->
+    <rect x="400" y="465" width="100" height="30" rx="15" fill="#7CFC00" opacity="0.9"/>
+    <text x="450" y="485" text-anchor="middle">Markets</text>
+    <!-- Tag: Weather -->
+    <rect x="515" y="465" width="100" height="30" rx="15" fill="#7CFC00" opacity="0.9"/>
+    <text x="565" y="485" text-anchor="middle">Weather</text>
+    <!-- Tag: Free -->
+    <rect x="630" y="465" width="80" height="30" rx="15" fill="#7CFC00" opacity="0.9"/>
+    <text x="670" y="485" text-anchor="middle">Free</text>
+    <!-- Tag: No Login -->
+    <rect x="725" y="465" width="100" height="30" rx="15" fill="#7CFC00" opacity="0.9"/>
+    <text x="775" y="485" text-anchor="middle">No Login</text>
+  </g>
+
+  <!-- URL -->
+  <text x="600" y="570" text-anchor="middle"
+        font-family="'Roboto Mono', 'Courier New', monospace"
+        font-size="16" fill="#a0bdba" opacity="0.7">varun-sv.github.io/world-situation</text>
+
+  <!-- Bottom accent bar -->
+  <rect x="0" y="625" width="1200" height="5" fill="#7CFC00" opacity="0.4"/>
+</svg>
